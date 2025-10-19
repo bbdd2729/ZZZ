@@ -5,7 +5,7 @@
         base.OnEnter();
         StateMachine.StateLocked = true;
         StateMachine._animator.Play("Evade_Front");
-        UniTaskTimer.Start(UniTaskTimer.Mode.Once
+        UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once
                            , 0.2f
                            , UniTaskTimer.TimeSource.Scaled
                            , () =>

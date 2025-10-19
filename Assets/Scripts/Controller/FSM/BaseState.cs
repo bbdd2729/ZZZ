@@ -17,15 +17,10 @@ public class BaseState : IState, IDisposable
 
     public virtual void OnExit() { }
 
-
-    // protected void PlayAnimation(string animationName)
-    // {
-    //
-    // }
-    //
-
-    public void Initialize(PlayerController playerController, StateMachine stateMachine, CharacterController characterController,
-                           Animator animator)
+    public void Initialize (PlayerController playerController,
+                            StateMachine stateMachine,
+                            CharacterController characterController,
+                            Animator animator)
     {
         PlayerController = playerController;
         StateMachine = stateMachine;

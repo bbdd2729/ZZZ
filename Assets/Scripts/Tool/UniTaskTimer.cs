@@ -80,7 +80,7 @@ public sealed class UniTaskTimer : IDisposable
     /// <summary>
     ///     创建并立即启动一个计时器
     /// </summary>
-    public static UniTaskTimer Start(Mode mode,
+    public static UniTaskTimer StartTimer(Mode mode,
                                      double interval,
                                      TimeSource source = TimeSource.Scaled,
                                      Action callback = null)

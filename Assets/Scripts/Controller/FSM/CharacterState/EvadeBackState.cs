@@ -5,15 +5,13 @@
         base.OnEnter();
         StateMachine.StateLocked = true;
         StateMachine._animator.Play("Evade_Back");
-        UniTaskTimer.Start(UniTaskTimer.Mode.Once
-                           , 0.2f
-                           , UniTaskTimer.TimeSource.Scaled
-                           , () =>
-                           {
-                               StateMachine.StateLocked = false;
-                               StateMachine.ChangeState<IdleState>();
-                           }
-                          );
+        UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 0.2f,
+                                UniTaskTimer.TimeSource.Scaled,
+                                () => {
+                                    StateMachine.StateLocked = false;
+                                    StateMachine.ChangeState<IdleState>();
+                                }
+                                );
     }
 
     public override void Update()
