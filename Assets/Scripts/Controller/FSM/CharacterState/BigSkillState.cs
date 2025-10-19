@@ -10,6 +10,7 @@
 
     public override void OnExit()
     {
+        StateMachine.ChangeState<IdleState>();
         base.OnExit();
     }
 }
