@@ -16,14 +16,15 @@ public class InputSystem : SingletonBase<InputSystem>
 
     #region 回调事件配置
 
-    private void SetupInputCallBacks()
+    /*private void SetupInputCallBacks()
     {
         InputActions.Player.Move.performed += ctx => OnMovePerformed?.Invoke(ctx);       //移动回调事件
         InputActions.Player.Move.canceled += ctx => OnMoveCanceled?.Invoke(ctx);         //移动取消回调事件
         InputActions.Player.Walk.performed += ctx => OnWalkEvent?.Invoke(ctx);           //行走回调事件
         InputActions.Player.Run.performed += ctx => OnEvadeEvent?.Invoke(ctx);           //奔跑冲刺回调事件
         InputActions.Player.Space.performed += ctx => SwitchCharacterEvent?.Invoke(ctx); //角色切换回调事件
-    }
+        InputActions.Player.Attack.performed += ctx => OnAttackEvent?.Invoke(ctx);
+    }*/
 
     #endregion
 
@@ -41,18 +42,20 @@ public class InputSystem : SingletonBase<InputSystem>
 
     public event Action<InputAction.CallbackContext> OnBigSkillEvent;
 
+    public event Action<InputAction.CallbackContext> OnAttackEvent;
+
     #endregion
 
     #region 系统初始化
 
-    private void IntializeInputAction()
+    /*private void IntializeInputAction()
     {
         InputActions = new InputSystem_Actions();
 
         SetupInputCallBacks();
 
         InputActions.Enable();
-    }
+    }*/
 
     private void Init()
     {
@@ -64,7 +67,7 @@ public class InputSystem : SingletonBase<InputSystem>
         InputActions.Player.Move.canceled += ctx => OnMoveCanceled?.Invoke(ctx); //移动取消回调事件
         InputActions.Player.Walk.performed += ctx => OnWalkEvent?.Invoke(ctx);   //行走回调事件
         InputActions.Player.Run.performed += ctx => OnEvadeEvent?.Invoke(ctx);   //奔跑冲刺回调事件
-
+        InputActions.Player.Attack.performed += ctx => OnAttackEvent?.Invoke(ctx);
         InputActions.Player.Space.performed += ctx => SwitchCharacterEvent?.Invoke(ctx); //角色切换回调事件
         InputActions.Player.BigSkill.performed += ctx => OnBigSkillEvent?.Invoke(ctx);   //大技能回调事件
     }

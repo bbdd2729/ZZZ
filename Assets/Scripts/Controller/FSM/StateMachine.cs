@@ -10,8 +10,9 @@ public class StateMachine
     private  IState                   _currentState;
     private  CompositeDisposable      _disposables = new();
     internal PlayerController         _playerController;
-    internal Dictionary<Type, IState> _states     = new();
-    internal bool                     StateLocked = false;
+    internal Dictionary<Type, IState> _states                  = new();
+    internal bool                     StateLocked              = false;
+    internal int                      currentNormalAttackIndex = 1;
 
     public StateMachine(PlayerController playerController, CharacterController characterController, Animator animator) // 状态机构造函数
     {
@@ -32,7 +33,7 @@ public class StateMachine
         }
 
         // 如果状态是 BaseState 的子类，则初始化它
-        if (state is BaseState baseState) baseState.Initialize(_playerController, this, _characterController, _animator);
+        if (state is BaseState baseState) baseState.Initialize(this);
 
         _states[type] = state;
     }

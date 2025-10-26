@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 
 public class BaseState : IState, IDisposable
 {
-    protected StateMachine        StateMachine        { get; private set; }
-    protected PlayerController    PlayerController    { get; private set; }
-    protected CharacterController CharacterController { get; private set; }
-    protected Animator            Animator            { get; private set; }
+    protected StateMachine StateMachine { get; private set; }
 
+    protected AnimatorStateInfo  StateInfo { get; private set; }
     public virtual void Dispose() { }
 
     public virtual void OnEnter() { }
@@ -17,15 +15,24 @@ public class BaseState : IState, IDisposable
 
     public virtual void OnExit() { }
 
-    public void Initialize (PlayerController playerController,
-                            StateMachine stateMachine,
-                            CharacterController characterController,
-                            Animator animator)
+    public void Initialize (StateMachine stateMachine)
     {
-        PlayerController = playerController;
         StateMachine = stateMachine;
-        CharacterController = characterController;
-        Animator = animator;
+    }
+
+    public bool IsAnimationEnd()
+    {
+        StateInfo = StateMachine._animator.GetCurrentAnimatorStateInfo(0);
+
+        return StateInfo.normalizedTime >= 1.0f && !StateMachine._animator.IsInTransition(0);
+    }
+
+    public float NormalizedTime()
+    {
+        //刷新动画状态
+        StateInfo = StateMachine._animator.GetCurrentAnimatorStateInfo(0);
+
+        return StateInfo.normalizedTime;
     }
 
 
@@ -45,7 +52,7 @@ public class BaseState : IState, IDisposable
         StateMachine.ChangeState<EvadeBackState>();
     }
 
-    protected void OnBigSkillEvent(InputAction.CallbackContext ctx)
+    protected void OnBigSkill(InputAction.CallbackContext ctx)
     {
         // 切换到大技能状态
         DebugX.Instance.Log("大技能事件触发");
@@ -65,6 +72,14 @@ public class BaseState : IState, IDisposable
         DebugX.Instance.Log("移动取消事件触发");
         StateMachine.ChangeState<IdleState>();
     }
+
+    protected void OnAttack(InputAction.CallbackContext ctx)
+    {
+        // 切换到攻击状态
+        DebugX.Instance.Log("攻击事件触发");
+        StateMachine.ChangeState<AttackState>();
+    }
+
 
     #endregion
 }

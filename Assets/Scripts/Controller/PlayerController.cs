@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     public                   float               rotationSpeed = 10f;
     [SerializeField] private Camera              _camera;
     private                  StateMachine        _stateMachine;
+    public                   int                 AttackLength = 4;
+
+
 
     public Vector3    CamPosition => _cameraSystem.CamPosition;
     public Quaternion CamRotation => _cameraSystem.CamRotation;
@@ -26,6 +29,9 @@ public class PlayerController : MonoBehaviour
         _stateMachine.RegisterState(new EvadeState());
         _stateMachine.RegisterState(new EvadeBackState());
         _stateMachine.RegisterState(new BigSkillState());
+        _stateMachine.RegisterState(new AttackState());
+        _stateMachine.RegisterState(new AttackEndState());
+
 
 
         _stateMachine.ChangeState<IdleState>();

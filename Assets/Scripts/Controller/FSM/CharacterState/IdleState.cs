@@ -3,9 +3,12 @@
     public override void OnEnter()
     {
         // 播放闲置动画
-        StateMachine._animator.Play("Idle");
+
         InputSystem.Instance.OnMovePerformed += OnMove;
+        InputSystem.Instance.OnAttackEvent += OnAttack;
         InputSystem.Instance.OnEvadeEvent += OnEvadeBack;
+        InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
+        StateMachine._animator.Play("Idle");
     }
 
 
@@ -15,6 +18,8 @@
     {
         base.OnExit();
         InputSystem.Instance.OnMovePerformed -= OnMove;
+        InputSystem.Instance.OnAttackEvent -= OnAttack;
         InputSystem.Instance.OnEvadeEvent -= OnEvadeBack;
+        InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
     }
 }
