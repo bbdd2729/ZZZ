@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CameraSystem        _cameraSystem;
     public                   float               rotationSpeed = 10f;
     [SerializeField] private Camera              _camera;
-    private                  StateMachine        _stateMachine;
+    public                   StateMachine        _stateMachine;
     public                   int                 AttackLength = 4;
 
 
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
         _stateMachine.RegisterState(new BigSkillState());
         _stateMachine.RegisterState(new AttackState());
         _stateMachine.RegisterState(new AttackEndState());
+        _stateMachine.RegisterState(new EvadeBackEndState());
 
 
 

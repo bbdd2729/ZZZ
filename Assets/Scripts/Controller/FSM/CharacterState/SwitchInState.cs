@@ -1,15 +1,18 @@
-﻿public class EvadeBackState : BaseState
+﻿
+
+public class SwitchInState : BaseState
 {
     public override void OnEnter()
     {
         base.OnEnter();
         StateMachine.StateLocked = true;
-        StateMachine._animator.Play("Evade_Back");
+        DebugX.Instance.Log($"SwitchInState OnEnter");
+        StateMachine._animator.Play("Switch_In");
         UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 0.4f,
                                 UniTaskTimer.TimeSource.Scaled,
                                 () => {
                                     StateMachine.StateLocked = false;
-                                    StateMachine.ChangeState<EvadeBackEndState>();
+                                    StateMachine.ChangeState<IdleState>();
                                 }
                                 );
     }
@@ -22,5 +25,6 @@
     public override void OnExit()
     {
         base.OnExit();
+        DebugX.Instance.Log($"SwitchInState OnExit");
     }
 }

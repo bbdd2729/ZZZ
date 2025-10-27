@@ -5,7 +5,7 @@
         {
             base.OnEnter();
             enterNextAttack = false;
-
+            DebugX.Instance.Log($"AttackState OnEnter { StateMachine.currentNormalAttackIndex }");
             StateMachine._animator.Play($"Attack_Normal_{ StateMachine.currentNormalAttackIndex }");
             InputSystem.Instance.OnMovePerformed += OnMove;
             InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
