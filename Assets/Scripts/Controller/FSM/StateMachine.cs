@@ -13,6 +13,7 @@ public class StateMachine
     internal Dictionary<Type, IState> _states                  = new();
     internal bool                     StateLocked              = false;
     internal int                      currentNormalAttackIndex = 1;
+    private  bool                     _isEnabled               = true;
 
     public StateMachine(PlayerController playerController, CharacterController characterController, Animator animator) // 状态机构造函数
     {
@@ -41,8 +42,8 @@ public class StateMachine
 
     public void ChangeState<T>() where T : IState
     {
-        if (StateLocked) return;
-
+        if (StateLocked || !_isEnabled) return;
+s
         var type = typeof(T);
         if (_states.TryGetValue(type, out var newState))
         {
@@ -59,6 +60,7 @@ public class StateMachine
 
     public void Update()
     {
+        if (!_isEnabled) return;  // 禁用时停止全部逻辑
         _currentState?.Update();
     }
 
@@ -82,4 +84,29 @@ public class StateMachine
     }
 
     public void Dispose() { }
+
+
+    public void Enable()
+    {
+        if (_isEnabled) return;
+        _isEnabled = true;
+
+        // 恢复输入
+        _playerController.SetInputActive(true);
+
+        // 重新进入当前状态（可选）
+        _currentState?.OnEnter();
+    }
+
+    public void Disable()
+    {
+        if (!_isEnabled) return;
+        _isEnabled = false;
+
+        // 立即屏蔽一切输入
+        _playerController.SetInputActive(false);
+
+        // 可选：让当前状态暂停（如需要）
+        // _currentState?.OnExit();
+    }
 }

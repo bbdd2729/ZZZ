@@ -763,6 +763,7 @@ MonoBehaviour:
   _camera: {fileID: 0}
   AttackLength: 4
   PlayerData: {fileID: 0}
+  LookAtPoint: {fileID: 2702181178612416609}
 --- !u!95 &6968421401438025606 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 23cdbd03f2eaf3f4cb518099d973a681, type: 3}

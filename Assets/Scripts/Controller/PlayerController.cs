@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public                                          StateMachine        _stateMachine;
     public                                          int                 AttackLength = 4;
     public                                          ScriptableObject    PlayerData;
+    public                                          Transform           LookAtPoint;
 
 
 
@@ -20,7 +21,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        InputSystem.Instance.InputActions.Enable();
 
 
         _stateMachine = new StateMachine(this, _characterController, _animator);
@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
 
         _stateMachine.ChangeState<IdleState>();
+
+
     }
 
     private void Start() { }
@@ -54,10 +56,29 @@ public class PlayerController : MonoBehaviour
         var input = InputSystem.Instance.MoveDirectionInput;
 
         // 计算目标角度（基于摄像机朝向）
-        var targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + _cameraSystem.CamRotation.eulerAngles.y;
+        var targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + CameraSystem.Instance.CamRotation.eulerAngles.y;
 
         // 平滑旋转角色
         var targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+    }
+
+
+    private void OnEnable()
+    {
+        _stateMachine.Enable();
+        SetInputActive(true);
+    }
+
+    private void OnDisable()
+    {
+        _stateMachine.Disable();
+        SetInputActive(false);
+    }
+
+    public void SetInputActive(bool value)
+    {
+        // 把你所有检测 Input.GetKey / ReadValue 的 flag 统一收拢到这里
+        this.enabled = value;   // 直接关闭组件是最简单的做法
     }
 }

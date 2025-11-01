@@ -57,7 +57,7 @@ public class InputSystem : SingletonBase<InputSystem>
         InputActions.Enable();
     }*/
 
-    private void Init()
+    public void Init()
     {
         InputActions.Player.Move.performed += ctx =>
         {

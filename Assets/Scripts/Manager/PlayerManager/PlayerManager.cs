@@ -1,5 +1,5 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public enum PlayerName
     {
@@ -11,9 +11,9 @@ public enum PlayerName
 
 public class PlayerManager : SingletonBase<PlayerManager>
 {
-    private int                    _currentPlayerIndex = 0;
-    public  List<PlayerController> PlayerControllers   = new List<PlayerController>();
-    public  PlayerController       CurrentPlayer;
+    [ShowInInspector] private int                    _currentPlayerIndex = 0;
+    [ShowInInspector] public  List<PlayerController> PlayerControllers   = new List<PlayerController>();
+    public                    PlayerController       CurrentPlayer;
 
     public void Init()
     {
@@ -21,10 +21,10 @@ public class PlayerManager : SingletonBase<PlayerManager>
             PlayerControllers = new List<PlayerController>();
 
         PlayerControllers.Clear();
-        CurrentPlayer = null;
         _currentPlayerIndex = 0;
-
+        CurrentPlayer = null;
         DebugX.Instance.Log("PlayerManager 初始化完成");
+        InputSystem.Instance.SwitchCharacterEvent += _ => SwitchNextPlayer();
     }
 
     public void AddPlayer(PlayerController playerController)
@@ -36,13 +36,18 @@ public class PlayerManager : SingletonBase<PlayerManager>
 
     public void SwitchNextPlayer()
     {
+        if (CurrentPlayer._stateMachine.StateLocked) return;
+        CurrentPlayer._stateMachine.ChangeState<SwitchOutState>();
         _currentPlayerIndex = (_currentPlayerIndex + 1) % PlayerControllers.Count;
         CurrentPlayer = PlayerControllers[_currentPlayerIndex];
+        CurrentPlayer.enabled = true;
         CurrentPlayer._stateMachine.ChangeState<SwitchInState>();
     }
 
     public void SwitchToPlayer(int playerIndex)
     {
+        if (CurrentPlayer._stateMachine.StateLocked) return;
+        CurrentPlayer._stateMachine.ChangeState<SwitchOutState>();
         _currentPlayerIndex = playerIndex;
         CurrentPlayer = PlayerControllers[_currentPlayerIndex];
         CurrentPlayer._stateMachine.ChangeState<SwitchInState>();
