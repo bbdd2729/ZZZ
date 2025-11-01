@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3806189810399122410}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3639107, y: 0, z: -0.020370483}
+  m_LocalPosition: {x: -0.03, y: 0.86, z: -0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41,15 +41,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 55934a5794fec6343b591337e20e1731, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.859911
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55934a5794fec6343b591337e20e1731, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000022649765
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55934a5794fec6343b591337e20e1731, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 49.413372
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 55934a5794fec6343b591337e20e1731, type: 3}
       propertyPath: m_LocalRotation.w
@@ -83,6 +83,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nostradamus_Model_CN
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 55934a5794fec6343b591337e20e1731, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 55934a5794fec6343b591337e20e1731, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9caeb5071b4e06446b1123fe40534855, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

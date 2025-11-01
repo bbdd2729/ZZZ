@@ -43,7 +43,7 @@ public class StateMachine
     public void ChangeState<T>() where T : IState
     {
         if (StateLocked || !_isEnabled) return;
-s
+
         var type = typeof(T);
         if (_states.TryGetValue(type, out var newState))
         {
@@ -91,11 +91,11 @@ s
         if (_isEnabled) return;
         _isEnabled = true;
 
-        // 恢复输入
-        _playerController.SetInputActive(true);
+        // 不在这里控制输入,由外部或状态自己控制
+        // _playerController.SetInputActive(true);
 
-        // 重新进入当前状态（可选）
-        _currentState?.OnEnter();
+        // 重新进入当前状态(可选)
+        // _currentState?.OnEnter();
     }
 
     public void Disable()
@@ -103,10 +103,13 @@ s
         if (!_isEnabled) return;
         _isEnabled = false;
 
-        // 立即屏蔽一切输入
-        _playerController.SetInputActive(false);
+        // 不在这里控制输入,由外部或状态自己控制
+        // _playerController.SetInputActive(false);
 
-        // 可选：让当前状态暂停（如需要）
+        // 可选:让当前状态暂停(如需要)
         // _currentState?.OnExit();
     }
+    
+    // 添加一个属性来检查状态机是否启用
+    public bool IsEnabled => _isEnabled;
 }

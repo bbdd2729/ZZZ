@@ -1,14 +1,12 @@
 ﻿
-
 public class SwitchInState : BaseState
 {
     public override void OnEnter()
     {
         base.OnEnter();
-        StateMachine.StateLocked = true;
         DebugX.Instance.Log($"SwitchInState OnEnter");
-        StateMachine._animator.Play("Switch_In");
-
+        StateMachine._animator.Play("SwitchIn_Normal");
+        StateMachine.StateLocked = true;
     }
 
     public override void Update()
@@ -29,5 +27,8 @@ public class SwitchInState : BaseState
     {
         base.OnExit();
         DebugX.Instance.Log($"SwitchInState OnExit");
+        // 确保在切换入状态结束后启用角色控制器
+        StateMachine._playerController.enabled = true;
+        StateMachine._playerController.SetInputActive(true);
     }
 }

@@ -31,15 +31,23 @@ public class GameMain  : MonoBehaviour
             // 实例化
             GameObject go = Instantiate(playerInfo.Prefab, TargetPoint.position, Quaternion.identity);
             go.name = playerInfo.PlayerName;
+            
+            // 只激活第一个角色
             go.SetActive(i == 0);
             DebugX.Instance.Log($"实例化玩家：{playerInfo.PlayerName}");
 
             // 关键：把 PlayerController 交给 Manager
-            PlayerManager.Instance.AddPlayer(go.GetComponent<PlayerController>());
+            PlayerController controller = go.GetComponent<PlayerController>();
+            PlayerManager.Instance.AddPlayer(controller);
 
+            // 确保非激活角色的组件被正确禁用
+            if (i != 0)
+            {
+                controller.SetInputActive(false);
+            }
 
             if (i == 0)
-                PlayerManager.Instance.CurrentPlayer = go.GetComponent<PlayerController>();
+                PlayerManager.Instance.CurrentPlayer = controller;
         }
 
     }

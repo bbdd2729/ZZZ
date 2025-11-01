@@ -24,15 +24,24 @@ public class PlayerController : MonoBehaviour
 
 
         _stateMachine = new StateMachine(this, _characterController, _animator);
+        
         _stateMachine.RegisterState(new IdleState());
         _stateMachine.RegisterState(new WalkState());
         _stateMachine.RegisterState(new RunState());
+        
         _stateMachine.RegisterState(new EvadeState());
         _stateMachine.RegisterState(new EvadeBackState());
+       _stateMachine.RegisterState(new EvadeBackEndState());
+       
         _stateMachine.RegisterState(new BigSkillState());
+        
         _stateMachine.RegisterState(new AttackState());
         _stateMachine.RegisterState(new AttackEndState());
-        _stateMachine.RegisterState(new EvadeBackEndState());
+        
+        
+        
+        _stateMachine.RegisterState(new SwitchInState());
+        _stateMachine.RegisterState(new SwitchOutState());
 
 
 
@@ -66,8 +75,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        // OnEnable 时不自动启用输入，由状态机控制
         _stateMachine.Enable();
-        SetInputActive(true);
     }
 
     private void OnDisable()
@@ -80,5 +89,15 @@ public class PlayerController : MonoBehaviour
     {
         // 把你所有检测 Input.GetKey / ReadValue 的 flag 统一收拢到这里
         this.enabled = value;   // 直接关闭组件是最简单的做法
+        
+        // 确保状态机也正确启用或禁用
+        if (value && this.gameObject.activeInHierarchy)
+        {
+            _stateMachine.Enable();
+        }
+        else
+        {
+            _stateMachine.Disable();
+        }
     }
 }

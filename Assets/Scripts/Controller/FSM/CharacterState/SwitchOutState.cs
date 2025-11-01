@@ -3,10 +3,13 @@ public class SwitchOutState : BaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        StateMachine.StateLocked = true;
+        
         DebugX.Instance.Log($"SwitchOutState OnEnter");
-        StateMachine._animator.Play("Switch_Out");
-
+        StateMachine._animator.Play("SwitchOut_Normal");
+        StateMachine.StateLocked = true;
+        
+        // 立即禁用输入控制
+        StateMachine._playerController.SetInputActive(false);
     }
 
     public override void Update()
