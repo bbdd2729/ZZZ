@@ -13,6 +13,9 @@ public class PlayerManager : SingletonBase<PlayerManager>
 {
     private int _currentPlayerIndex = 0;
     public List<PlayerController> PlayerControllers;
+    public PlayerController CurrentPlayer { get; private set; }
+
+
 
     public void AddPlayer(PlayerController playerController)
     {
