@@ -2,13 +2,14 @@
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Animator            _animator;
-    [SerializeField] private CharacterController _characterController;
-    [SerializeField] private CameraSystem        _cameraSystem;
-    public                   float               rotationSpeed = 10f;
-    [SerializeField] private Camera              _camera;
-    public                   StateMachine        _stateMachine;
-    public                   int                 AttackLength = 4;
+    [SerializeField]                        private Animator            _animator;
+    [SerializeField]                        private CharacterController _characterController;
+    [SerializeField]                        private CameraSystem        _cameraSystem;
+    public  float               RotationSpeed = 10f;
+    [SerializeField]                        private Camera              _camera;
+    public                                          StateMachine        _stateMachine;
+    public                                          int                 AttackLength = 4;
+    public                                          ScriptableObject    PlayerData;
 
 
 
@@ -57,6 +58,6 @@ public class PlayerController : MonoBehaviour
 
         // 平滑旋转角色
         var targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
     }
 }

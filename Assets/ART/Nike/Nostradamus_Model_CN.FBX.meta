@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 55934a5794fec6343b591337e20e1731
 ModelImporter:
-  serializedVersion: 21300
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -36,8 +36,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 1
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -60,6 +58,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -87,6 +86,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -95,27 +95,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 0b5cc40467d97d8439f701c69682fb53
-  - a46b4e6791cc29146b37e13b03fdb634
-  - c4be8f0fb27636349bfd6c5ea2974179
-  - 7e10ad516e114014db57c6285397e4ed
-  - 20a6226505b7a2146af1c8400f6d708b
-  - 7b43a59f8fd18d144b6785bfa8efee11
-  - 8c6ded484d531444b9b00167755383ef
-  - a557c7b9a7b5ac749a8bfedc29dd8aeb
-  - 5f6177ac54bdd2a4b9df04f328b73c5f
-  - 6c28cb912c398114899e1094efea86ea
-  - 2031defac0ca4664baa9bb8812b107ce
-  - 933b7eea79d0bea4d936b37c39bf6bef
-  - 878e95f9378cc974599581c19cf4b212
-  - 0bf685e8a661bb74dabfc3e429c71bf2
-  - ee02cb62c56def344bb111a9591ae6b7
-  - adb657ed55f307e478a345eb85e22ada
-  - 30014c2280c63114c9952fcccf4ac04c
-  - 51046cc5377f18146be0d575222159fa
-  - ceafb88e4ced93d4cbeeed748e5e85d6
-  - 5de677ecc472a5e49bd9137b1844a416
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -979,8 +959,7 @@ ModelImporter:
     - name: Bip001 L Calf Adv
       parentName: Bip001 L Calf
       position: {x: -0.00000008940697, y: -9.313226e-10, z: 0.000000074505806}
-      rotation: {x: 0.000000005025867, y: -0.00000014714894, z: -0.000000007450578,
-        w: 1}
+      rotation: {x: 0.000000005025867, y: -0.00000014714894, z: -0.000000007450578, w: 1}
       scale: {x: 1.0000002, y: 0.9999999, z: 0.99999994}
     - name: JH_L
       parentName: Bip001 L Calf Adv
@@ -1125,8 +1104,7 @@ ModelImporter:
     - name: BO_RIBBON_03
       parentName: BO_RIBBON_02
       position: {x: -0.053570956, y: 0.00000011920929, z: 0}
-      rotation: {x: -0.000000059604645, y: 0.000000001862646, z: -0.0000000074505815,
-        w: 1}
+      rotation: {x: -0.000000059604645, y: 0.000000001862646, z: -0.0000000074505815, w: 1}
       scale: {x: 0.9999998, y: 1, z: 1.0000002}
     - name: BO_RIBBON_05
       parentName: BO_RIBBON_01
@@ -1261,6 +1239,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 

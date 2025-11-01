@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.cd /mnt/e/Unity/ZZZ)",
+      "mcp__ide__getDiagnostics",
+      "Bash(/mnt/e/Unity/ZZZ)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

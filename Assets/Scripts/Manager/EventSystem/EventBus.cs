@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public static class EventBus
+public  class EventBus : SingletonBase<EventBus>
 {
-    private static readonly Dictionary<Type, object> _events = new();
+    private readonly Dictionary<Type, object> _events = new();
 
     // 获取事件实例
-    public static GameEvent<T> GetGameEvent<T>()
+    public GameEvent<T> GetGameEvent<T>()
     {
         var type = typeof(T);
         if (!_events.ContainsKey(type)) _events[type] = new GameEvent<T>();
