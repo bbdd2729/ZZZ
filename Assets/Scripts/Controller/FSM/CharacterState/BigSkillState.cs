@@ -3,17 +3,23 @@
     public override void OnEnter()
     {
         base.OnEnter();
+        StateMachine.StateLocked = true;
         StateMachine._animator.Play("BigSkill");
-        UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 0.4f,
-                                UniTaskTimer.TimeSource.Scaled,
-                                () => {
-                                    StateMachine.StateLocked = false;
-                                    StateMachine.ChangeState<IdleState>();
-                                }
-                               );
+
     }
 
-    public override void Update() { }
+    public override void Update()
+    {
+        #region 检测动画是否结束
+        if (IsAnimationEnd())
+        {
+            //切换到待机状态
+            StateMachine.StateLocked = false;
+            StateMachine.ChangeState<IdleState>();
+            return;
+        }
+        #endregion
+    }
 
     public override void OnExit()
     {

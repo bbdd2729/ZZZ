@@ -363,7 +363,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0.20265853, z: 0}
+  TargetOffset: {x: 0, y: 0.73, z: 0}
   Damping: {x: 0.5, y: 0.5}
   Lookahead:
     Enabled: 0
@@ -393,14 +393,14 @@ MonoBehaviour:
   Radius: 2.2
   Orbits:
     Top:
-      Radius: 1.1554909
-      Height: 2.1086855
+      Radius: 1.3109818
+      Height: 2.2538457
     Center:
-      Radius: 2.4321365
-      Height: 0.97100246
+      Radius: 2.489357
+      Height: 1.1040412
     Bottom:
-      Radius: 0.60658836
-      Height: -0.77682465
+      Radius: 0.8692875
+      Height: -0.5603894
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
@@ -484,8 +484,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322213082}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09744613, y: 0, z: 0, w: 0.9952408}
-  m_LocalPosition: {x: 30.73, y: 2.034335, z: 43.803345}
+  m_LocalRotation: {x: 0.015098161, y: -0.0000000070345796, z: 1.06222225e-10, w: 0.99988604}
+  m_LocalPosition: {x: 30.73, y: 2.1779313, z: 43.7267}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -617,8 +617,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.097446136, y: 0, z: 0, w: 0.9952408}
-  m_LocalPosition: {x: 30.73, y: 2.034335, z: 43.803345}
+  m_LocalRotation: {x: 0.015098161, y: -0.00000000703458, z: 1.0622133e-10, w: 0.99988604}
+  m_LocalPosition: {x: 30.73, y: 2.1779313, z: 43.7267}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

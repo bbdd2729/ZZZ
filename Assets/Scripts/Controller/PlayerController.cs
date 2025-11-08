@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
         
         _stateMachine.RegisterState(new EvadeState());
         _stateMachine.RegisterState(new EvadeBackState());
-       _stateMachine.RegisterState(new EvadeBackEndState());
-       
+        _stateMachine.RegisterState(new EvadeBackEndState());
+
         _stateMachine.RegisterState(new BigSkillState());
         
         _stateMachine.RegisterState(new AttackState());

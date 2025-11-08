@@ -7,6 +7,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.coffee.ui-effect": {
+      "version": "https://github.com/mob-sakai/UIEffect.git?path=Packages/src",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "ef7ac0aaad7e8d60415e9348c9d84b32cc3a6437"
+    },
     "com.cysharp.r3": {
       "version": "https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity",
       "depth": 0,
@@ -42,6 +51,15 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
+    },
+    "com.singularitygroup.hotreload": {
+      "version": "file:com.singularitygroup.hotreload",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      }
     },
     "com.unity.ai.navigation": {
       "version": "2.0.9",
