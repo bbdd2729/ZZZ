@@ -8,7 +8,7 @@ public class GameMain  : MonoBehaviour
     public                   GameObject       Player;
     private readonly         List<GameObject> playerModels = new List<GameObject>(3);
 
-
+    
     private void Awake()
     {
 
@@ -17,7 +17,7 @@ public class GameMain  : MonoBehaviour
         PlayerManager.Instance.Init();  // 初始化 PlayerManager
         InputSystem.Instance.InputActions.Enable();
         InputSystem.Instance.Init();
-
+        UIManager.Instance.Init();
         #endregion
 
         //todo 场景加载器
