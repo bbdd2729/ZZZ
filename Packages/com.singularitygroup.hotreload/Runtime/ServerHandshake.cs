@@ -1,4 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -241,4 +240,3 @@ namespace SingularityGroup.HotReload {
         }
     }
 }
-#endif

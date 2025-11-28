@@ -1,5 +1,4 @@
-﻿#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
-#pragma warning disable CS0618 // obsolete warnings (stay warning-free also in newer unity versions) 
+﻿#pragma warning disable CS0618 // obsolete warnings (stay warning-free also in newer unity versions) 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -189,4 +188,3 @@ namespace SingularityGroup.HotReload {
 
     }
 }
-#endif

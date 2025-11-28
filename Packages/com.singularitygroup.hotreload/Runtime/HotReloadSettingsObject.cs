@@ -1,5 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
-
 using System;
 using System.IO;
 using System.Linq;
@@ -137,4 +135,3 @@ namespace SingularityGroup.HotReload {
         #endregion settings
     }
 }
-#endif

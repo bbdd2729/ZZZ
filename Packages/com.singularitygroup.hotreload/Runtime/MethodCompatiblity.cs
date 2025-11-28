@@ -1,5 +1,3 @@
-#if ENABLE_MONO && (DEVELOPMENT_BUILD || UNITY_EDITOR)
-
 using System;
 using System.Reflection;
 
@@ -112,4 +110,3 @@ namespace SingularityGroup.HotReload {
         }
     }
 }
-#endif
