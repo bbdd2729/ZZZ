@@ -501,6 +501,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e047da89-aaec-4aad-91bb-9369a91de193",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f0b427c5-e949-4232-a99b-88e964f86b8f",
                     "path": "<Keyboard>/e",
                     "interactions": "",

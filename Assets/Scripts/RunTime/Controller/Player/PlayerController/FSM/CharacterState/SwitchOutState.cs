@@ -6,7 +6,7 @@ public class SwitchOutState : BaseState
         
         DebugX.Instance.Log($"SwitchOutState OnEnter");
         StateMachine._animator.Play("SwitchOut_Normal");
-        StateMachine.StateLocked = true;
+        StateMachine.SetStateLocked(true);
         
         // 立即禁用输入控制
         StateMachine._playerController.SetInputActive(false);
@@ -19,7 +19,7 @@ public class SwitchOutState : BaseState
         if (IsAnimationEnd())
         {
             //切换到待机状态
-            StateMachine.StateLocked = false;
+            StateMachine.SetStateLocked(false);
             StateMachine.ChangeState<IdleState>();
             return;
         }

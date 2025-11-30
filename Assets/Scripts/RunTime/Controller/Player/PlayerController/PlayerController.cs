@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using VContainer;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,38 +19,46 @@ public class PlayerController : MonoBehaviour
     public Quaternion CamRotation => _cameraSystem.CamRotation;
 
 
+    [Inject] private IStateMachineFactory _stateMachineFactory;
+    
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _characterController = GetComponent<CharacterController>();
 
-
+        // 使用工厂创建状态机（如果可用）
+        if (_stateMachineFactory != null)
+        {
+            _stateMachine = _stateMachineFactory.CreateStateMachine(this) as StateMachine;
+        }
+        else
+        {
+            // 回退到原有创建方式，保持兼容性
+            CreateStateMachineManually();
+        }
+    }
+    
+    private void CreateStateMachineManually()
+    {
+        // 原有状态机创建逻辑
         _stateMachine = new StateMachine(this, _characterController, _animator);
         
+        // 注册状态（保持原有逻辑）
         _stateMachine.RegisterState(new IdleState());
         _stateMachine.RegisterState(new WalkState());
         _stateMachine.RegisterState(new RunState());
-        
         _stateMachine.RegisterState(new EvadeState());
         _stateMachine.RegisterState(new EvadeBackState());
         _stateMachine.RegisterState(new EvadeBackEndState());
-
         _stateMachine.RegisterState(new BigSkillState());
-        
         _stateMachine.RegisterState(new AttackState());
         _stateMachine.RegisterState(new AttackEndState());
-        
-        
-        
         _stateMachine.RegisterState(new SwitchInState());
         _stateMachine.RegisterState(new SwitchOutState());
-
-
-
+        
+        // 设置初始状态
         _stateMachine.ChangeState<IdleState>();
-
-
     }
-
     private void Start() { }
 
     private void Update()

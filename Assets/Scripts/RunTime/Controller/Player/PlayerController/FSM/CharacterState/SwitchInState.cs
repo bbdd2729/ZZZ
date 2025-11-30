@@ -6,7 +6,7 @@ public class SwitchInState : BaseState
         base.OnEnter();
         DebugX.Instance.Log($"SwitchInState OnEnter");
         StateMachine._animator.Play("SwitchIn_Normal");
-        StateMachine.StateLocked = true;
+        StateMachine.SetStateLocked(true);
     }
 
     public override void Update()
@@ -16,7 +16,7 @@ public class SwitchInState : BaseState
         if (IsAnimationEnd())
         {
             //切换到待机状态
-            StateMachine.StateLocked = false;
+            StateMachine.SetStateLocked(false);
             StateMachine.ChangeState<IdleState>();
             return;
         }

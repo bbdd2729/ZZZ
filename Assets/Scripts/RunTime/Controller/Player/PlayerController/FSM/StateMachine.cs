@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using R3;
 using UnityEngine;
 
-public class StateMachine
+public class StateMachine : IStateMachine
 {
     internal Animator                 _animator;
     internal CharacterController      _characterController;
@@ -11,15 +11,34 @@ public class StateMachine
     private  CompositeDisposable      _disposables = new();
     internal PlayerController         _playerController;
     internal Dictionary<Type, IState> _states                  = new();
-    internal bool                     StateLocked              = false;
     internal int                      currentNormalAttackIndex = 1;
     private  bool                     _isEnabled               = true;
+    
+    // 为内部状态类提供访问_stateLocked的公共方法
+    public bool GetStateLocked() => StateLocked;
+    public void SetStateLocked(bool value) => StateLocked = value;
+    
+    // 实现IStateMachine接口的属性
+    public BaseState CurrentState
+    {
+        get => _currentState as BaseState;
+        private set => _currentState = value;
+    }
+    
+    // 实现IStateMachine接口的StateLocked属性
+    public bool StateLocked { get; set; } = false;
+
+    // 性能监控
+    private StateMachinePerformanceMonitor _performanceMonitor;
+    
+    public StateMachinePerformanceMonitor PerformanceMonitor => _performanceMonitor;
 
     public StateMachine(PlayerController playerController, CharacterController characterController, Animator animator) // 状态机构造函数
     {
         _playerController = playerController;
         _characterController = characterController;
         _animator = animator;
+        _performanceMonitor = new StateMachinePerformanceMonitor();
     }
 
 
@@ -61,7 +80,12 @@ public class StateMachine
     public void Update()
     {
         if (!_isEnabled) return;  // 禁用时停止全部逻辑
-        _currentState?.Update();
+        
+        // 使用性能监控记录状态更新
+        _performanceMonitor?.RecordStateUpdate(_currentState, () =>
+        {
+            _currentState?.Update();
+        });
     }
 
     /*public void Dispose()
@@ -112,4 +136,15 @@ public class StateMachine
     
     // 添加一个属性来检查状态机是否启用
     public bool IsEnabled => _isEnabled;
+    
+    // 实现IStateMachine接口的方法
+    public void Lock()
+    {
+        StateLocked = true;
+    }
+    
+    public void Unlock()
+    {
+        StateLocked = false;
+    }
 }
