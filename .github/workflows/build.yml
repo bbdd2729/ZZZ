@@ -1,6 +1,5 @@
 name: Game Build Action
 
-# 手动触发，支持选择分支 + 输入版本号
 on:
   workflow_dispatch:
     inputs:
@@ -13,69 +12,101 @@ on:
         description: '版本号（会拼到文件名里）'
         required: true
         type: string
-      unityVersion: 
+      unityVersion:
         description: 'Unity 版本号（默认 6000.0.60f1）'
         required: false
         type: string
-        default: '6000.0.60f1'   # 👈 默认值
+        default: '6000.0.60f1'
+      platforms:
+        description: '选择要构建的平台'
+        required: true
+        type: choice
+        options:
+          - Windows
+          - Android
+          - Windows+Android
+        default: 'Windows'
 
 jobs:
+  # 0. 生成合法 JSON 矩阵
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          case "${{ github.event.inputs.platforms }}" in
+            Windows)     echo 'matrix=["Windows"]'       >> $GITHUB_OUTPUT ;;
+            Android)     echo 'matrix=["Android"]'       >> $GITHUB_OUTPUT ;;
+            Windows+Android) echo 'matrix=["Windows","Android"]' >> $GITHUB_OUTPUT ;;
+            *)           echo 'matrix=[]'                >> $GITHUB_OUTPUT ;;
+          esac
+
+  # 1. 按矩阵构建
   build:
-    name: Build ${{ matrix.targetPlatform }} ✨
+    name: Build ${{ matrix.platform }} ✨
+    needs: setup
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false          # 一个平台失败不影响另一个
+      fail-fast: false
       matrix:
-        targetPlatform:
-          - StandaloneWindows64 # Windows 64 位 (.exe)
-          - Android             # Android (.apk)
+        platform: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
-      # 1. 拉取用户指定的分支/标签
+      # 1.1 检出
       - name: 检出代码
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
 
-      # 2. Git LFS 缓存：先生成文件指纹，再命中缓存，最后拉取大文件
+      # 1.2 Git LFS 缓存
       - name: 生成 LFS 文件指纹
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
       - name: 还原 LFS 缓存
         uses: actions/cache@v3
-        id: lfs-cache
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
       - name: 拉取 LFS 大文件
         run: |
           git lfs pull
           git add .
           git reset --hard
 
-      # 3. Library 缓存：按平台分别缓存，避免交叉污染
+      # 1.3 Library 缓存（分平台）
       - name: 还原 Library 缓存
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-${{ matrix.platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-${{ matrix.targetPlatform }}-
+            Library-${{ matrix.platform }}-
 
-      # 4. Unity 构建
-      - name: Unity 打包 ${{ matrix.targetPlatform }}
-        uses: game-ci/unity-builder@v4.8.1
+      # 1.4 平台 → Unity target 映射
+      - name: 设置 Unity targetPlatform
+        id: unity
+        run: |
+          case "${{ matrix.platform }}" in
+            Windows) echo "target=StandaloneWindows64" >> $GITHUB_OUTPUT ;;
+            Android) echo "target=Android" >> $GITHUB_OUTPUT ;;
+          esac
+
+      # 1.5 Unity 构建
+      - name: Unity 打包 ${{ matrix.platform }}
+        uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          IL2CPP_THREADS: 2
+          IL2CPP_MAX_STEPS: 2
         with:
-          targetPlatform: ${{ matrix.targetPlatform }}
-          unityVersion: ${{ inputs.unityVersion }}   # 👈 使用手动输入
+          targetPlatform: ${{ steps.unity.outputs.target }}
+          unityVersion: ${{ inputs.unityVersion }}
 
-      # 5. 上传制品：文件名里拼入版本号，方便区分
+      # 1.6 上传制品（含版本号）
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}-v${{ inputs.version }}
+          name: Build-${{ matrix.platform }}-v${{ inputs.version }}
           path: build
