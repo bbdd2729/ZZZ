@@ -13,6 +13,11 @@ on:
         description: '版本号（会拼到文件名里）'
         required: true
         type: string
+      unityVersion: 
+        description: 'Unity 版本号（默认 6000.0.60f1）'
+        required: false
+        type: string
+        default: '6000.0.60f1'   # 👈 默认值
 
 jobs:
   build:
@@ -66,7 +71,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          unityVersion: 6000.0.60f1
+          unityVersion: ${{ inputs.unityVersion }}   # 👈 使用手动输入
 
       # 5. 上传制品：文件名里拼入版本号，方便区分
       - name: 上传构建产物
