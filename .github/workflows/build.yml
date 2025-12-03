@@ -66,6 +66,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+          unityVersion: 6000.0.60f1
 
       # 5. 上传制品：文件名里拼入版本号，方便区分
       - name: 上传构建产物
