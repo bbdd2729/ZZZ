@@ -1,1 +1,75 @@
+name: Game Build Action
 
+# 手动触发，支持选择分支 + 输入版本号
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: '要构建的分支或标签'
+        required: true
+        default: 'main'
+        type: string
+      version:
+        description: '版本号（会拼到文件名里）'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build ${{ matrix.targetPlatform }} ✨
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false          # 一个平台失败不影响另一个
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Windows 64 位 (.exe)
+          - Android             # Android (.apk)
+    steps:
+      # 1. 拉取用户指定的分支/标签
+      - name: 检出代码
+        uses: actions/checkout@v6.0.1
+        with:
+          ref: ${{ inputs.ref }}
+
+      # 2. Git LFS 缓存：先生成文件指纹，再命中缓存，最后拉取大文件
+      - name: 生成 LFS 文件指纹
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: 还原 LFS 缓存
+        uses: actions/cache@v3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: 拉取 LFS 大文件
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      # 3. Library 缓存：按平台分别缓存，避免交叉污染
+      - name: 还原 Library 缓存
+        uses: actions/cache@v4.3.0
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+
+      # 4. Unity 构建
+      - name: Unity 打包 ${{ matrix.targetPlatform }}
+        uses: game-ci/unity-builder@v4.8.1
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+
+      # 5. 上传制品：文件名里拼入版本号，方便区分
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-${{ matrix.targetPlatform }}-v${{ inputs.version }}
+          path: build
