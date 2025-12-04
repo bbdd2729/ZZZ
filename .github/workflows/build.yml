@@ -98,8 +98,8 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          IL2CPP_THREADS: 2
-          IL2CPP_MAX_STEPS: 2
+          IL2CPP_THREADS: 1
+          IL2CPP_MAX_STEPS: 1
         with:
           targetPlatform: ${{ steps.unity.outputs.target }}
           unityVersion: ${{ inputs.unityVersion }}
