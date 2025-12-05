@@ -39,5 +39,7 @@ ShaderVariantCollection:
         passType: 0
       - keywords: SAMPLING_PIXELATION
         passType: 0
+      - keywords: TRANSITION_CUTOFF
+        passType: 0
       - keywords: TRANSITION_FADE
         passType: 0
