@@ -3,24 +3,28 @@ using VContainer;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]                        private Animator            _animator;
-    [SerializeField]                        private CharacterController _characterController;
-    [SerializeField]                        private CameraSystem        _cameraSystem;
-    public  float               RotationSpeed = 10f;
-    [SerializeField]                        private Camera              _camera;
-    public                                          StateMachine        _stateMachine;
-    public                                          int                 AttackLength = 4;
-    public                                          ScriptableObject    PlayerData;
-    public                                          Transform           LookAtPoint;
-
-
-
+    [SerializeField] internal Animator            _animator;
+    [SerializeField] internal CharacterController _characterController;
+    [SerializeField] private  CameraSystem        _cameraSystem;
+    public                    float               RotationSpeed = 10f;
+    [SerializeField] private  Camera              _camera;
+    public                    StateMachine        _stateMachine;
+    public                    int                 AttackLength = 4;
+    public                    ScriptableObject    PlayerData;
+    public                    Transform           LookAtPoint;
+    [SerializeField] private  PlayerConfig        playerConfig;
+    [SerializeField] private PlayerControllerConfig playerControllerConfig;
+    
+    
     public Vector3    CamPosition => _cameraSystem.CamPosition;
     public Quaternion CamRotation => _cameraSystem.CamRotation;
 
 
     [Inject] private IStateMachineFactory _stateMachineFactory;
+    private  InputSystem          _inputSystem { get => InputSystem.Instance; }
+
     
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -41,7 +45,7 @@ public class PlayerController : MonoBehaviour
     private void CreateStateMachineManually()
     {
         // 原有状态机创建逻辑
-        _stateMachine = new StateMachine(this, _characterController, _animator);
+        _stateMachine = new StateMachine(this);
         
         // 注册状态（保持原有逻辑）
         _stateMachine.RegisterState(new IdleState());
@@ -71,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetCharacterRotation()
     {
-        var input = InputSystem.Instance.MoveDirectionInput;
+        var input = _inputSystem.MoveDirectionInput;
 
         // 计算目标角度（基于摄像机朝向）
         var targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + CameraSystem.Instance.CamRotation.eulerAngles.y;
@@ -80,14 +84,13 @@ public class PlayerController : MonoBehaviour
         var targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
     }
-
-
+    
     private void OnEnable()
     {
         // OnEnable 时不自动启用输入，由状态机控制
         _stateMachine.Enable();
     }
-
+    
     private void OnDisable()
     {
         _stateMachine.Disable();

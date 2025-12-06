@@ -25,7 +25,7 @@ public class GameMain  : MonoBehaviour
 
         for (int i = 0; i < teamInfo.PlayerInfoList.Length; i++)
         {
-            PlayerInfo playerInfo = teamInfo.PlayerInfoList[i];
+            PlayerConfig playerInfo = teamInfo.PlayerInfoList[i];
             if (playerInfo == null || playerInfo.Prefab == null) continue;
 
             // 实例化

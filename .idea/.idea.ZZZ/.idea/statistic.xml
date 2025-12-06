@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Statistic">
+    <option name="fileTypesIncluded" value="cs" />
+    <option name="excludeDotArtifactDirectory" value="true" />
     <option name="excludedDirectories">
       <list>
         <option value="$PROJECT_DIR$/Library" />
@@ -24,6 +26,37 @@
         <option value="$PROJECT_DIR$/Assets/Plugins" />
         <option value="$PROJECT_DIR$/Assets/Public" />
         <option value="$PROJECT_DIR$/Assets/Scenes" />
+        <option value="$PROJECT_DIR$/.claude" />
+        <option value="$PROJECT_DIR$/.git" />
+        <option value="$PROJECT_DIR$/.github" />
+        <option value="$PROJECT_DIR$/.idea" />
+        <option value="$PROJECT_DIR$/.qoder" />
+        <option value="$PROJECT_DIR$/.trae" />
+        <option value="$PROJECT_DIR$/.utmp" />
+        <option value="$PROJECT_DIR$/.vscode" />
+        <option value="$PROJECT_DIR$/Build" />
+        <option value="$PROJECT_DIR$/GeneratedAssets_deleted" />
+        <option value="$PROJECT_DIR$/Library" />
+        <option value="$PROJECT_DIR$/Logs" />
+        <option value="$PROJECT_DIR$/obj" />
+        <option value="$PROJECT_DIR$/Packages" />
+        <option value="$PROJECT_DIR$/ProfilerCaptures" />
+        <option value="$PROJECT_DIR$/ProjectSettings" />
+        <option value="$PROJECT_DIR$/SceneBackups" />
+        <option value="$PROJECT_DIR$/Temp" />
+        <option value="$PROJECT_DIR$/UserSettings" />
+        <option value="$PROJECT_DIR$/ZZZ_BurstDebugInformation_DoNotShip" />
+        <option value="$PROJECT_DIR$/Assets/_Recovery" />
+        <option value="$PROJECT_DIR$/Assets/HotReload" />
+        <option value="$PROJECT_DIR$/Assets/Packages" />
+        <option value="$PROJECT_DIR$/Assets/Plugins" />
+        <option value="$PROJECT_DIR$/Assets/ProjectSettings" />
+        <option value="$PROJECT_DIR$/Assets/Resources" />
+        <option value="$PROJECT_DIR$/Assets/Samples" />
+        <option value="$PROJECT_DIR$/Assets/Settings" />
+        <option value="$PROJECT_DIR$/Assets/TextMesh Pro" />
+        <option value="$PROJECT_DIR$/Assets/ThirdParty" />
+        <option value="$PROJECT_DIR$/Assets/TutorialInfo" />
       </list>
     </option>
   </component>

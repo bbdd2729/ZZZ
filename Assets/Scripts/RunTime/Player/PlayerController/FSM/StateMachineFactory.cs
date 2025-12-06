@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 
 public class StateMachineFactory : IStateMachineFactory
@@ -14,11 +13,7 @@ public class StateMachineFactory : IStateMachineFactory
     public IStateMachine CreateStateMachine(PlayerController playerController)
     {
         // 创建状态机实例
-        var stateMachine = new StateMachine(
-            playerController, 
-            playerController.GetComponent<CharacterController>(), 
-            playerController.GetComponent<Animator>()
-        );
+        var stateMachine = new StateMachine(playerController);
         
         // 注册所有状态
         RegisterPlayerStates(stateMachine, playerController);
