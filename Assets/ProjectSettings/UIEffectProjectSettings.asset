@@ -37,9 +37,15 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+      - keywords: COLOR_FILTER
+        passType: 0
+      - keywords: COLOR_FILTER TRANSITION_MELT
+        passType: 0
       - keywords: SAMPLING_PIXELATION
         passType: 0
       - keywords: TRANSITION_CUTOFF
         passType: 0
       - keywords: TRANSITION_FADE
+        passType: 0
+      - keywords: TRANSITION_PATTERN
         passType: 0
