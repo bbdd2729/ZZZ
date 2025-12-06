@@ -1,15 +1,39 @@
 using VContainer;
 using VContainer.Unity;
 
-public class PersonalLifeTimeScope : LifetimeScope
+public class RootLifeTimeScope : LifetimeScope
 {
-
-
+    
     public       GameConfig      Config;
     public static IObjectResolver RootContainer { get; private set; } = null; 
     
     protected override void Configure(IContainerBuilder builder)
     {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // 注册配置
         builder.RegisterInstance(Config);
         
@@ -32,6 +56,9 @@ public class PersonalLifeTimeScope : LifetimeScope
         // 注册入口点
         builder.RegisterEntryPoint<GameRoot>();
     }
+    
+    
+    
     
     protected override void Awake()
     {

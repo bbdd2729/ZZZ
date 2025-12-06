@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputSystem : SingletonBase<InputSystem>
+public class InputSystem : SingletonBase<InputSystem>, IInputSystem
 {
     public InputSystem_Actions InputActions;
 

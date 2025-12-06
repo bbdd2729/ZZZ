@@ -37,6 +37,7 @@ public class PlayerSwitchManager : IPlayerSwitchManager
         coroutineRunner.StartCoroutine(PerformPlayerSwitch(coroutineRunner));
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator PerformPlayerSwitch(CoroutineRunner coroutineRunner)
     {
         _isSwitching = true;

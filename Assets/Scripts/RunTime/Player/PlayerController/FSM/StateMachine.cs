@@ -5,43 +5,43 @@ using UnityEngine;
 
 public class StateMachine : IStateMachine
 {
-    internal Animator                 _animator;
-    internal CharacterController      _characterController;
-    private  IState                   _currentState;
-    private  CompositeDisposable      _disposables = new();
-    internal PlayerController         _playerController;
-    internal Dictionary<Type, IState> _states                  = new();
-    internal int                      currentNormalAttackIndex = 1;
-    private  bool                     _isEnabled               = true;
-    
+    #region 字段定义
+    internal PlayerController         _playerController;    //角色控制器
+    internal CharacterController      _characterController; //角色控制器
+    internal Animator                 _animator;            //角色动画器
+    private  IState                   _currentState;        //状态接口
+    internal Dictionary<Type, IState> _states                  = new();     //状态字典
+    private  CompositeDisposable      _disposables = new();     //状态机使用的可取消订阅
+    internal int                      currentNormalAttackIndex = 1;    //当前普通攻击索引
+    private bool _isEnabled               = true;    //是否启用状态机
+    public  bool IsEnabled => _isEnabled;
+    #region 状态机锁
+
     // 为内部状态类提供访问_stateLocked的公共方法
-    public bool GetStateLocked() => StateLocked;
+    public bool GetStateLocked() => StateLocked;    
+    
+    
     public void SetStateLocked(bool value) => StateLocked = value;
     
-    // 实现IStateMachine接口的属性
     public BaseState CurrentState
     {
         get => _currentState as BaseState;
         private set => _currentState = value;
     }
-    
-    // 实现IStateMachine接口的StateLocked属性
     public bool StateLocked { get; set; } = false;
 
+    #endregion 
     // 性能监控
     private StateMachinePerformanceMonitor _performanceMonitor;
-    
     public StateMachinePerformanceMonitor PerformanceMonitor => _performanceMonitor;
-
-    public StateMachine(PlayerController playerController, CharacterController characterController, Animator animator) // 状态机构造函数
+    #endregion
+    public StateMachine(PlayerController playerController) // 状态机构造函数
     {
         _playerController = playerController;
-        _characterController = characterController;
-        _animator = animator;
+        _characterController = playerController._characterController;
+        _animator = playerController._animator;
         _performanceMonitor = new StateMachinePerformanceMonitor();
     }
-
-
     public void RegisterState<T>(T state) where T : IState
     {
         var type = typeof(T);
@@ -57,8 +57,6 @@ public class StateMachine : IStateMachine
 
         _states[type] = state;
     }
-
-
     public void ChangeState<T>() where T : IState
     {
         if (StateLocked || !_isEnabled) return;
@@ -75,8 +73,6 @@ public class StateMachine : IStateMachine
             Debug.LogError($"State {type} not registered!");
         }
     }
-
-
     public void Update()
     {
         if (!_isEnabled) return;  // 禁用时停止全部逻辑
@@ -87,7 +83,6 @@ public class StateMachine : IStateMachine
             _currentState?.Update();
         });
     }
-
     /*public void Dispose()
     {
         _currentState?.OnExit();
@@ -101,15 +96,11 @@ public class StateMachine : IStateMachine
         _disposables?.Dispose();
         _states.Clear();
     }*/
-
     private void OnDestroy()
     {
         //Dispose();
     }
-
     public void Dispose() { }
-
-
     public void Enable()
     {
         if (_isEnabled) return;
@@ -121,7 +112,6 @@ public class StateMachine : IStateMachine
         // 重新进入当前状态(可选)
         // _currentState?.OnEnter();
     }
-
     public void Disable()
     {
         if (!_isEnabled) return;
@@ -133,16 +123,10 @@ public class StateMachine : IStateMachine
         // 可选:让当前状态暂停(如需要)
         // _currentState?.OnExit();
     }
-    
-    // 添加一个属性来检查状态机是否启用
-    public bool IsEnabled => _isEnabled;
-    
-    // 实现IStateMachine接口的方法
     public void Lock()
     {
         StateLocked = true;
     }
-    
     public void Unlock()
     {
         StateLocked = false;
