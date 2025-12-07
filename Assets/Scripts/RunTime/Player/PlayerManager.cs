@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using VContainer;
 
 public enum PlayerName
     {
@@ -12,193 +11,68 @@ public enum PlayerName
     }
 
 
-public class PlayerManager : SingletonBase<PlayerManager>, IPlayerManager
+public class PlayerManager : SingletonBase<PlayerManager>
 {
-    [ShowInInspector] private int                    _currentPlayerIndex = 0;
-    [ShowInInspector] public  List<PlayerController> PlayerControllers   = new List<PlayerController>();
-    public                    PlayerController       CurrentPlayer { get; set; }
+    [ShowInInspector] private int                    _currentPlayerIndex = 0;                            // 当前角色索引
+    [ShowInInspector] public  PlayerController        CurrentPlayer{ get => PlayerControllers[_currentPlayerIndex]; }
+    [ShowInInspector] public  List<PlayerController> PlayerControllers   = new List<PlayerController>(); // 角色控制器列表
+    [ShowInInspector] public  List<GameObject>       PlayerInstances        = new List<GameObject>();       // 角色模型列表
+    //[ShowInInspector] public  bool                   CanSwitchPlayer { get =>  }
     
-    // 显式实现接口属性
-    IReadOnlyList<PlayerController> IPlayerManager.PlayerControllers => PlayerControllers;
     
-    // 依赖注入新的切换管理器
-    [Inject] private IPlayerSwitchManager _switchManager;
+    public static event Action<PlayerController> OnPlayerSwitched;   // 添加事件支持
     
-    // 添加事件支持
-    public event Action<PlayerController> OnPlayerSwitched;
-    
-    // 功能开关 - 用于回滚机制
-    [SerializeField] private bool _useNewSwitchSystem = true;
-
     public void Init()
     {
-        if (PlayerControllers == null)
-            PlayerControllers = new List<PlayerController>();
-
-        PlayerControllers.Clear();
-        _currentPlayerIndex = 0;
-        CurrentPlayer = null;
-        DebugX.Instance.Log("PlayerManager 初始化完成");
-        InputSystem.Instance.SwitchCharacterEvent += _ => SwitchNextPlayer();
-    }
-
-    public void AddPlayer(PlayerController playerController)
-    {
-        PlayerControllers.Add(playerController);
-    }
-
-    public void SwitchNextPlayer()
-    {
-        if (!CanSwitchPlayer()) return;
-        
-        if (_useNewSwitchSystem && _switchManager != null && !_switchManager.IsSwitching)
-        {
-            // 使用新的切换系统
-            PerformNewPlayerSwitch();
-        }
-        else
-        {
-            // 回退到原有切换逻辑
-            PerformLegacyPlayerSwitch();
-        }
-    }
+        Debug.Log("PlayerManager Init");
+        InputSystem.Instance.SwitchCharacterEvent += ctx => SwitchToNextPlayer();
+    } // 初始化
     
-    private void PerformNewPlayerSwitch()
+    public void SwitchToPlayer(int playerIndex) // 切换到指定角色
     {
-        var oldPlayer = CurrentPlayer;
-        _currentPlayerIndex = (_currentPlayerIndex + 1) % PlayerControllers.Count;
-        var newPlayer = PlayerControllers[_currentPlayerIndex];
-        
-        // 使用新的切换管理器
-        _switchManager.StartPlayerSwitch(oldPlayer, newPlayer);
-        CurrentPlayer = newPlayer;
-        
-        // 触发切换事件
-        OnPlayerSwitched?.Invoke(CurrentPlayer);
-    }
-    
-    private void PerformLegacyPlayerSwitch()
-    {
-        // 禁用当前角色
-        if (CurrentPlayer != null)
+        if (playerIndex < 0 || playerIndex >= PlayerControllers.Count)
         {
-            // 立即禁用输入和组件
-            CurrentPlayer.SetInputActive(false);
-            CurrentPlayer.enabled = false;
-            CurrentPlayer._stateMachine.ChangeState<SwitchOutState>();
+            Debug.LogWarning($"[CharacterManager] 非法索引 {playerIndex}");
+            return;
         }
-        
-        _currentPlayerIndex = (_currentPlayerIndex + 1) % PlayerControllers.Count;
-        var oldPlayer = CurrentPlayer;
-        CurrentPlayer = PlayerControllers[_currentPlayerIndex];
-        
-        // 启用新角色，但先不启用输入，等待 SwitchInState 结束后再启用
-        CurrentPlayer.gameObject.SetActive(true);
-        CurrentPlayer.enabled = true; // 先启用组件，但输入控制由状态管理
-        CurrentPlayer._stateMachine.ChangeState<SwitchInState>();
-        
-        // 在新角色切换入后，隐藏旧角色
-        if (oldPlayer != null)
-        {
-            oldPlayer.gameObject.SetActive(false);
-        }
-        
-        // 触发切换事件
-        OnPlayerSwitched?.Invoke(CurrentPlayer);
-    }
 
-    public bool CanSwitchPlayer()
-    {
-        return CurrentPlayer != null && !CurrentPlayer._stateMachine.StateLocked;
-    }
+        if (playerIndex == _currentPlayerIndex) return;
+        // 1. 销毁旧角色（或休眠）
+        PlayerExit();
+        // 2. 生成新角色（或激活）
+        PlayerEnter(playerIndex);
 
-    public void Initialize()
-    {
-        Init();
-    }
-
-    public void SwitchToPlayer(int playerIndex)
-    {
-        if (!CanSwitchPlayer()) return;
-        
-        if (_useNewSwitchSystem && _switchManager != null && !_switchManager.IsSwitching)
-        {
-            // 使用新的切换系统
-            PerformNewPlayerSwitchTo(playerIndex);
-        }
-        else
-        {
-            // 回退到原有切换逻辑
-            PerformLegacyPlayerSwitchTo(playerIndex);
-        }
-    }
-    
-    private void PerformNewPlayerSwitchTo(int playerIndex)
-    {
-        var oldPlayer = CurrentPlayer;
-        var newPlayer = PlayerControllers[playerIndex];
-        
-        // 使用新的切换管理器
-        _switchManager.StartPlayerSwitch(oldPlayer, newPlayer);
         _currentPlayerIndex = playerIndex;
-        CurrentPlayer = newPlayer;
-        
-        // 触发切换事件
-        OnPlayerSwitched?.Invoke(CurrentPlayer);
+        OnPlayerSwitched?.Invoke(PlayerControllers[playerIndex]);
+    }
+    public void SwitchToNextPlayer() // 切换到下个角色
+    {
+        if (PlayerControllers.Count == 0) return;
+        int nextIndex = (_currentPlayerIndex + 1) % PlayerControllers.Count;
+        SwitchToPlayer(nextIndex);
+    }
+    public void SwitchToPreviousPlayer() // 切换到上个角色
+    {
+        if (PlayerControllers.Count == 0) return;
+        int prevIndex = (_currentPlayerIndex - 1 + PlayerControllers.Count) % PlayerControllers.Count;
+        SwitchToPlayer(prevIndex);
     }
     
-    private void PerformLegacyPlayerSwitchTo(int playerIndex)
+    public void PlayerEnter(int playerindex)
     {
-        
-        // 禁用当前角色
-        if (CurrentPlayer != null)
+        /* 方案 A：激活-休眠（快，不销毁） */
+        if (playerindex < PlayerInstances.Count && PlayerInstances[playerindex] != null)
         {
-            // 立即禁用输入和组件
-            CurrentPlayer.SetInputActive(false);
-            CurrentPlayer.enabled = false;
-            CurrentPlayer._stateMachine.ChangeState<SwitchOutState>();
+            PlayerInstances[playerindex].SetActive(true);
+            PlayerControllers[playerindex].StateMachine.ChangeState<SwitchInState>();
         }
-        
-        var oldPlayerIndex = _currentPlayerIndex;
-        var oldPlayer = CurrentPlayer;
-        _currentPlayerIndex = playerIndex;
-        CurrentPlayer = PlayerControllers[_currentPlayerIndex];
-        
-        // 启用新角色，但先不启用输入，等待 SwitchInState 结束后再启用
-        CurrentPlayer.gameObject.SetActive(true);
-        CurrentPlayer.enabled = true; // 先启用组件，但输入控制由状态管理
-        CurrentPlayer._stateMachine.ChangeState<SwitchInState>();
-        
-        // 在新角色切换入后，隐藏旧角色
-        if (oldPlayerIndex != _currentPlayerIndex && oldPlayer != null)
-        {
-            oldPlayer.gameObject.SetActive(false);
-        }
-        
-        // 触发切换事件
-        OnPlayerSwitched?.Invoke(CurrentPlayer);
     }
 
-    public void LoadPlayer()
+    public void PlayerExit()
     {
-        CurrentPlayer = PlayerControllers[_currentPlayerIndex];
-        
-        for (int i = 0; i < PlayerControllers.Count; i++)
-        {
-            var playerController = PlayerControllers[i];
-            if (i == _currentPlayerIndex)
-            {
-                playerController.gameObject.SetActive(true);
-                playerController.enabled = true;
-                playerController.SetInputActive(true);
-                playerController._stateMachine.ChangeState<IdleState>();
-            }
-            else
-            {
-                playerController.gameObject.SetActive(false); // 非当前角色隐藏
-                playerController.enabled = false;
-                playerController.SetInputActive(false);
-            }
-        }
+        if (_currentPlayerIndex < 0) return; // 如果当前角色索引小于0，则返回
+        if (_currentPlayerIndex < PlayerControllers.Count && PlayerControllers[_currentPlayerIndex] != null)
+            PlayerControllers[_currentPlayerIndex].StateMachine.ChangeState<SwitchOutState>();
+        //_playerInstances[CurrentPlayerIndex].SetActive(false);
     }
 }

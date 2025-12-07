@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Corin
   m_EditorClassIdentifier: 
   RuntimeModel: {fileID: 0}
-  Prefab: {fileID: 3885437615658366054, guid: d1bd992039a46704b9832f4c5378cce6, type: 3}
+  PlayerPrefab: {fileID: 3885437615658366054, guid: d1bd992039a46704b9832f4c5378cce6, type: 3}
   MaxHP: 0
   PlayerName: Corin
+  AttackLength: 4

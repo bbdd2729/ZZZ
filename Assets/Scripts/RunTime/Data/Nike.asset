@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Nike
   m_EditorClassIdentifier: 
   RuntimeModel: {fileID: 0}
-  Prefab: {fileID: 2597750292188056087, guid: 316b843ea5c53674fb449408ce1ef6a6, type: 3}
+  PlayerPrefab: {fileID: 2597750292188056087, guid: 316b843ea5c53674fb449408ce1ef6a6, type: 3}
   MaxHP: 0
   PlayerName: Nike
+  AttackLength: 4

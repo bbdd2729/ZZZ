@@ -29,6 +29,7 @@ public class SwitchOutState : BaseState
     public override void OnExit()
     {
         base.OnExit();
+        StateMachine._playerController.gameObject.SetActive(false);
         DebugX.Instance.Log($"SwitchOutState OnExit");
     }
 }

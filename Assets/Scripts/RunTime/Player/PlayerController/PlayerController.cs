@@ -3,25 +3,31 @@ using VContainer;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("角色基本组件和属性")]
     [SerializeField] internal Animator            _animator;
-    [SerializeField] internal CharacterController _characterController;
-    [SerializeField] private  CameraSystem        _cameraSystem;
-    public                    float               RotationSpeed = 10f;
-    [SerializeField] private  Camera              _camera;
-    public                    StateMachine        _stateMachine;
-    public                    int                 AttackLength = 4;
+    [SerializeField] internal CharacterController    _characterController;
+    [SerializeField] private  PlayerConfig           playerConfig;
+    [SerializeField] private  PlayerControllerConfig playerControllerConfig;
+    
+    
+    
+    
+    
+    
     public                    ScriptableObject    PlayerData;
     public                    Transform           LookAtPoint;
-    [SerializeField] private  PlayerConfig        playerConfig;
-    [SerializeField] private PlayerControllerConfig playerControllerConfig;
     
+    [Inject] private          CameraSystem        _cameraSystem;
+    [Inject] private          IStateMachineFactory _stateMachineFactory;
+    internal InputSystem  InputSystem { get => InputSystem.Instance; }
     
-    public Vector3    CamPosition => _cameraSystem.CamPosition;
-    public Quaternion CamRotation => _cameraSystem.CamRotation;
+    public                   float        RotationSpeed {get=> playerControllerConfig.RotationSpeed;}
+    public                   int          AttackLength {get=> playerConfig.AttackLength;}
 
+    public StateMachine StateMachine { get; set; }
 
-    [Inject] private IStateMachineFactory _stateMachineFactory;
-    private  InputSystem          _inputSystem { get => InputSystem.Instance; }
+    
+
 
     
 
@@ -33,7 +39,7 @@ public class PlayerController : MonoBehaviour
         // 使用工厂创建状态机（如果可用）
         if (_stateMachineFactory != null)
         {
-            _stateMachine = _stateMachineFactory.CreateStateMachine(this) as StateMachine;
+            StateMachine = _stateMachineFactory.CreateStateMachine(this) as StateMachine;
         }
         else
         {
@@ -45,23 +51,23 @@ public class PlayerController : MonoBehaviour
     private void CreateStateMachineManually()
     {
         // 原有状态机创建逻辑
-        _stateMachine = new StateMachine(this);
+        StateMachine = new StateMachine(this);
         
         // 注册状态（保持原有逻辑）
-        _stateMachine.RegisterState(new IdleState());
-        _stateMachine.RegisterState(new WalkState());
-        _stateMachine.RegisterState(new RunState());
-        _stateMachine.RegisterState(new EvadeState());
-        _stateMachine.RegisterState(new EvadeBackState());
-        _stateMachine.RegisterState(new EvadeBackEndState());
-        _stateMachine.RegisterState(new BigSkillState());
-        _stateMachine.RegisterState(new AttackState());
-        _stateMachine.RegisterState(new AttackEndState());
-        _stateMachine.RegisterState(new SwitchInState());
-        _stateMachine.RegisterState(new SwitchOutState());
+        StateMachine.RegisterState(new IdleState());
+        StateMachine.RegisterState(new WalkState());
+        StateMachine.RegisterState(new RunState());
+        StateMachine.RegisterState(new EvadeState());
+        StateMachine.RegisterState(new EvadeBackState());
+        StateMachine.RegisterState(new EvadeBackEndState());
+        StateMachine.RegisterState(new BigSkillState());
+        StateMachine.RegisterState(new AttackState());
+        StateMachine.RegisterState(new AttackEndState());
+        StateMachine.RegisterState(new SwitchInState());
+        StateMachine.RegisterState(new SwitchOutState());
         
         // 设置初始状态
-        _stateMachine.ChangeState<IdleState>();
+        StateMachine.ChangeState<IdleState>();
     }
     private void Start() { }
 
@@ -70,12 +76,12 @@ public class PlayerController : MonoBehaviour
         //Debug.DrawRay(CamPosition, CamRotation * Vector3.forward, Color.red)
 
 
-        _stateMachine.Update();
+        StateMachine.Update();
     }
 
     public void SetCharacterRotation()
     {
-        var input = _inputSystem.MoveDirectionInput;
+        var input = InputSystem.MoveDirectionInput;
 
         // 计算目标角度（基于摄像机朝向）
         var targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + CameraSystem.Instance.CamRotation.eulerAngles.y;
@@ -88,12 +94,12 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         // OnEnable 时不自动启用输入，由状态机控制
-        _stateMachine.Enable();
+        StateMachine.Enable();
     }
     
     private void OnDisable()
     {
-        _stateMachine.Disable();
+        StateMachine.Disable();
         SetInputActive(false);
     }
 
@@ -105,11 +111,29 @@ public class PlayerController : MonoBehaviour
         // 确保状态机也正确启用或禁用
         if (value && this.gameObject.activeInHierarchy)
         {
-            _stateMachine.Enable();
+            StateMachine.Enable();
         }
         else
         {
-            _stateMachine.Disable();
+            StateMachine.Disable();
         }
+    }
+    
+    
+    
+    public void PlayerExit()
+    {
+        // 禁用输入
+        SetInputActive(false);
+        // 禁用状态机
+        StateMachine.Disable();
+    }
+    
+    public void PlayerEnter()
+    {
+        // 启用输入
+        SetInputActive(true);
+        // 启用状态机
+        StateMachine.Enable();
     }
 }

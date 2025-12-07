@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Anbi
   m_EditorClassIdentifier: 
   RuntimeModel: {fileID: 0}
-  Prefab: {fileID: 4404294074589050694, guid: 14f24574017ef294aa64c6c8bda85323, type: 3}
+  PlayerPrefab: {fileID: 4404294074589050694, guid: 14f24574017ef294aa64c6c8bda85323, type: 3}
   MaxHP: 0
   PlayerName: Anbi
+  AttackLength: 4
