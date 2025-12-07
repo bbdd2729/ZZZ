@@ -4,10 +4,10 @@
     {
         base.OnEnter();
         StateMachine._animator.Play("Run");
-        InputSystem.Instance.OnMoveCanceled += OnMoveCanceled;
-        InputSystem.Instance.OnEvadeEvent += OnEvadeEvent;
-        InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
-        InputSystem.Instance.OnAttackEvent += OnAttack;
+        StateMachine._playerController.InputSystem.OnMoveCanceled += OnMoveCanceled;
+        StateMachine._playerController.InputSystem.OnEvadeEvent += OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent += OnBigSkill;
+        StateMachine._playerController.InputSystem.OnAttackEvent += OnAttack;
     }
 
     public override void Update()
@@ -17,10 +17,10 @@
 
     public override void OnExit()
     {
-        InputSystem.Instance.OnMoveCanceled -= OnMoveCanceled;
-        InputSystem.Instance.OnEvadeEvent -= OnEvadeEvent;
-        InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
-        InputSystem.Instance.OnAttackEvent -= OnAttack;
+        StateMachine._playerController.InputSystem.OnMoveCanceled -= OnMoveCanceled;
+        StateMachine._playerController.InputSystem.OnEvadeEvent -= OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent -= OnBigSkill;
+        StateMachine._playerController.InputSystem.OnAttackEvent -= OnAttack;
         base.OnExit();
     }
 }

@@ -7,15 +7,15 @@
             enterNextAttack = false;
             DebugX.Instance.Log($"AttackState OnEnter { StateMachine.currentNormalAttackIndex }");
             StateMachine._animator.Play($"Attack_Normal_{ StateMachine.currentNormalAttackIndex }");
-            InputSystem.Instance.OnMovePerformed += OnMove;
-            InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
+            StateMachine._playerController.InputSystem.OnMovePerformed += OnMove;
+            StateMachine._playerController.InputSystem.OnBigSkillEvent += OnBigSkill;
         }
 
         public override void Update()
         {
             base.Update();
 
-            if (NormalizedTime() >= 0.5f && InputSystem.Instance.InputActions.Player.Attack.triggered)
+            if (NormalizedTime() >= 0.5f && StateMachine._playerController.InputSystem.InputActions.Player.Attack.triggered)
             {
                 enterNextAttack = true;
             }
@@ -52,8 +52,8 @@
         {
             StateMachine._animator.Play("Attack_Normal_1_End");
             base.OnExit();
-            InputSystem.Instance.OnMovePerformed -= OnMove;
-            InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
+            StateMachine._playerController.InputSystem.OnMovePerformed -= OnMove;
+            StateMachine._playerController.InputSystem.OnBigSkillEvent -= OnBigSkill;
         }
 
 

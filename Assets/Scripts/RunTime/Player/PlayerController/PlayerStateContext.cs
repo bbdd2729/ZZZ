@@ -1,5 +1,6 @@
-using UnityEngine;
 
+
+/*
 /// <summary>
 /// 玩家状态上下文
 /// 封装状态机和状态所需的所有数据和方法
@@ -42,7 +43,6 @@ public class PlayerStateContext
         Animator = playerController.GetComponent<Animator>();
         CharacterController = playerController.GetComponent<CharacterController>();
         InputSystem = InputSystem.Instance;
-        CameraSystem = CameraSystem.Instance;
     }
     
     /// <summary>
@@ -62,4 +62,4 @@ public class PlayerStateContext
     /// 获取相机旋转
     /// </summary>
     public Quaternion CamRotation => PlayerController.CamRotation;
-}
+}*/

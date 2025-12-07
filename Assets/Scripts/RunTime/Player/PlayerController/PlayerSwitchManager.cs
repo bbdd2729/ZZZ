@@ -73,10 +73,10 @@ public class PlayerSwitchManager : IPlayerSwitchManager
         var fromPlayer = _currentSwitchContext.FromPlayer;
         
         // 锁定当前玩家的状态机
-        fromPlayer._stateMachine.Lock();
+        fromPlayer.StateMachine.Lock();
         
         // 检查是否可以切换 - 使用StateLocked属性
-        if (fromPlayer._stateMachine is StateMachine stateMachine && stateMachine.StateLocked)
+        if (fromPlayer.StateMachine is StateMachine stateMachine && stateMachine.StateLocked)
         {
             DebugX.Instance.LogWarning("Cannot switch player - current state locked");
             yield break;
@@ -90,7 +90,7 @@ public class PlayerSwitchManager : IPlayerSwitchManager
         var fromPlayer = _currentSwitchContext.FromPlayer;
         
         // 切换到切换出状态
-        fromPlayer._stateMachine.ChangeState<SwitchOutState>();
+        fromPlayer.StateMachine.ChangeState<SwitchOutState>();
         
         // 等待切换出动画完成
         yield return WaitForSwitchAnimation("SwitchOut_Normal", fromPlayer);
@@ -109,7 +109,7 @@ public class PlayerSwitchManager : IPlayerSwitchManager
         toPlayer.enabled = true;
         
         // 切换到切换入状态
-        toPlayer._stateMachine.ChangeState<SwitchInState>();
+        toPlayer.StateMachine.ChangeState<SwitchInState>();
         
         // 等待切换入动画完成
         yield return WaitForSwitchAnimation("SwitchIn_Normal", toPlayer);
@@ -123,7 +123,7 @@ public class PlayerSwitchManager : IPlayerSwitchManager
         toPlayer.SetInputActive(true);
         
         // 解锁状态机
-        toPlayer._stateMachine.Unlock();
+        toPlayer.StateMachine.Unlock();
         
         // 隐藏旧玩家
         _currentSwitchContext.FromPlayer.gameObject.SetActive(false);

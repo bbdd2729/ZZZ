@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputSystem : SingletonBase<InputSystem>, IInputSystem
+public class InputSystem : SingletonBase<InputSystem>,IInputSystem
 {
     public InputSystem_Actions InputActions;
 
@@ -11,6 +11,7 @@ public class InputSystem : SingletonBase<InputSystem>, IInputSystem
         Debug.Log("已创建InputSystem实例");
         if (InputActions == null) InputActions = new InputSystem_Actions();
 
+        InputActions.Enable();
         Init();
     }
 

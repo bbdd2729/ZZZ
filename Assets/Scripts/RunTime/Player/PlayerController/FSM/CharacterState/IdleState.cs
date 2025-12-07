@@ -3,11 +3,10 @@ public class IdleState : BaseState
     public override void OnEnter()
     {
         // 播放闲置动画
-
-        InputSystem.Instance.OnMovePerformed += OnMove;
-        InputSystem.Instance.OnAttackEvent += OnAttack;
-        InputSystem.Instance.OnEvadeEvent += OnEvadeBack;
-        InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
+        StateMachine._playerController.InputSystem.OnMovePerformed += OnMove;
+        StateMachine._playerController.InputSystem.OnAttackEvent += OnAttack;
+        StateMachine._playerController.InputSystem.OnEvadeEvent += OnEvadeBack;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent += OnBigSkill;
         StateMachine._animator.Play("Idle");
     }
 
@@ -17,9 +16,9 @@ public class IdleState : BaseState
     public override void OnExit()
     {
         base.OnExit();
-        InputSystem.Instance.OnMovePerformed -= OnMove;
-        InputSystem.Instance.OnAttackEvent -= OnAttack;
-        InputSystem.Instance.OnEvadeEvent -= OnEvadeBack;
-        InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
+        StateMachine._playerController.InputSystem.OnMovePerformed -= OnMove;
+        StateMachine._playerController.InputSystem.OnAttackEvent -= OnAttack;
+        StateMachine._playerController.InputSystem.OnEvadeEvent -= OnEvadeBack;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent -= OnBigSkill;
     }
 }

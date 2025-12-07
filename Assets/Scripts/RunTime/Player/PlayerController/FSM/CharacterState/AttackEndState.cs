@@ -9,16 +9,16 @@ public class AttackEndState : BaseState
 
         //播放攻击后摇动画
         StateMachine._animator.Play($"Attack_Normal_{ StateMachine.currentNormalAttackIndex }_End") ;
-        InputSystem.Instance.OnMovePerformed += OnMove;
-        InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
-        InputSystem.Instance.OnEvadeEvent += OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnMovePerformed += OnMove;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent += OnBigSkill;
+        StateMachine._playerController.InputSystem.OnEvadeEvent += OnEvadeEvent;
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (InputSystem.Instance.InputActions.Player.Attack.triggered)
+        if (StateMachine._playerController.InputSystem.InputActions.Player.Attack.triggered)
         {
             //攻击段数累加
             StateMachine.currentNormalAttackIndex++;
@@ -37,8 +37,8 @@ public class AttackEndState : BaseState
     public override void OnExit()
     {
         base.OnExit();
-        InputSystem.Instance.OnMovePerformed -= OnMove;
-        InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
-        InputSystem.Instance.OnEvadeEvent -= OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnMovePerformed -= OnMove;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent -= OnBigSkill;
+        StateMachine._playerController.InputSystem.OnEvadeEvent -= OnEvadeEvent;
     }
 }

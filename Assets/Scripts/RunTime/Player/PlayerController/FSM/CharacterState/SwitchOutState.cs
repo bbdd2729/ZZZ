@@ -30,5 +30,6 @@ public class SwitchOutState : BaseState
     {
         base.OnExit();
         DebugX.Instance.Log($"SwitchOutState OnExit");
+        StateMachine._playerController.gameObject.SetActive(false);
     }
 }

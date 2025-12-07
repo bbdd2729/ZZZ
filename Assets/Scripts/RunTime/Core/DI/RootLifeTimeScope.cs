@@ -5,56 +5,38 @@ public class RootLifeTimeScope : LifetimeScope
 {
     
     public       GameConfig      Config;
-    public static IObjectResolver RootContainer { get; private set; } = null; 
+    public static IObjectResolver RootContainer { get; private set; }
     
     protected override void Configure(IContainerBuilder builder)
     {
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         // 注册配置
         builder.RegisterInstance(Config);
-        
         // 注册基础服务
-        builder.Register<SceneLoader>(Lifetime.Singleton);
+        builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
         builder.Register<IntroPlayer>(Lifetime.Singleton);
+        
+        //builder.Register<CameraSystem>(Lifetime.Singleton).As<ICameraSystem>();
         
         // 注册事件系统适配器
         builder.Register<EventBusAdapter>(Lifetime.Singleton).As<IEventBus>();
         
         // 注册新的架构服务
-        builder.Register<PlayerManagerService>(Lifetime.Singleton).As<IPlayerManager>();
+        //builder.Register<PlayerManagerService>(Lifetime.Singleton).As<IPlayerManager>();
         builder.Register<StateMachineFactory>(Lifetime.Singleton).As<IStateMachineFactory>();
         builder.Register<PlayerSwitchManager>(Lifetime.Singleton).As<IPlayerSwitchManager>();
         builder.Register<PlayerObjectPool>(Lifetime.Singleton).As<IPlayerObjectPool>();
         
         // 保持向后兼容 - 注册PlayerManager单例
-        builder.Register<PlayerManager>(Lifetime.Singleton);
         
         // 注册入口点
-        builder.RegisterEntryPoint<GameRoot>();
+        builder.RegisterComponentInHierarchy<GameMain>();
+        //builder.Register<InputSystem>(Lifetime.Singleton).AsSelf().As<IInputSystem>();
+        builder.RegisterComponentInHierarchy<PlayerManager>().AsSelf().As<IPlayerManager>();
+        
+        
+        
+        
+            
     }
     
     
@@ -63,14 +45,9 @@ public class RootLifeTimeScope : LifetimeScope
     protected override void Awake()
     {
         base.Awake();
-        RootContainer = Container;
+        if (RootContainer == null) RootContainer = Container; // 只赋一次
         DontDestroyOnLoad(gameObject);
         
-        // 确保单例实例可用并保持向后兼容
-        var playerManager = Container.Resolve<PlayerManager>();
-        if (playerManager != null)
-        {
-            PlayerManager.Instance.Init();
-        }
+        
     }
 }

@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using VContainer;
+
 
 // 可注入的角色管理服务
-public class PlayerManagerService : IPlayerManager, IDisposable
+/*public class PlayerManagerService : IPlayerManager, IDisposable
 {
     private readonly PlayerManager _playerManager;
     
@@ -34,4 +32,4 @@ public class PlayerManagerService : IPlayerManager, IDisposable
         // 不能直接设置事件为null，只能通过移除所有订阅者
         // 这里我们不需要特别清理，因为PlayerManager的生命周期和Service相同
     }
-}
+}*/

@@ -3,10 +3,10 @@ public class WalkState : BaseState
     public override void OnEnter()
     {
         StateMachine._animator.Play("Walk");
-        InputSystem.Instance.OnMoveCanceled += OnMoveCanceled;
-        InputSystem.Instance.OnEvadeEvent += OnEvadeEvent;
-        InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
-        InputSystem.Instance.OnAttackEvent += OnAttack;
+        StateMachine._playerController.InputSystem.OnMoveCanceled += OnMoveCanceled;
+        StateMachine._playerController.InputSystem.OnEvadeEvent += OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent += OnBigSkill;
+        StateMachine._playerController.InputSystem.OnAttackEvent += OnAttack;
         UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 4.0f,
                                 UniTaskTimer.TimeSource.Scaled,
                                 () => {
@@ -24,9 +24,9 @@ public class WalkState : BaseState
     public override void OnExit()
     {
         base.OnExit();
-        InputSystem.Instance.OnMoveCanceled -= OnMoveCanceled;
-        InputSystem.Instance.OnEvadeEvent -= OnEvadeEvent;
-        InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;
-        InputSystem.Instance.OnAttackEvent -= OnAttack;
+        StateMachine._playerController.InputSystem.OnMoveCanceled -= OnMoveCanceled;
+        StateMachine._playerController.InputSystem.OnEvadeEvent -= OnEvadeEvent;
+        StateMachine._playerController.InputSystem.OnBigSkillEvent -= OnBigSkill;
+        StateMachine._playerController.InputSystem.OnAttackEvent -= OnAttack;
     }
 }
