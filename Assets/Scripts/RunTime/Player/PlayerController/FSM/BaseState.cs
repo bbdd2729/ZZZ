@@ -6,8 +6,8 @@ public class BaseState : IState, IDisposable
 {
     protected StateMachine StateMachine { get; private set; }
 
-    protected AnimatorStateInfo  StateInfo { get; private set; }
-    public virtual void Dispose() { }
+    protected      AnimatorStateInfo StateInfo { get; private set; }
+    public virtual void              Dispose() { }
 
     public virtual void OnEnter() { }
 
@@ -15,7 +15,7 @@ public class BaseState : IState, IDisposable
 
     public virtual void OnExit() { }
 
-    public void Initialize (StateMachine stateMachine)
+    public void Initialize(StateMachine stateMachine)
     {
         StateMachine = stateMachine;
     }
@@ -70,7 +70,7 @@ public class BaseState : IState, IDisposable
     {
         // 切换到闲置状态
         DebugX.Instance.Log("移动取消事件触发");
-        StateMachine.ChangeState<IdleState>();
+        StateMachine.ChangeState<RunEndState>();
     }
 
     protected void OnAttack(InputAction.CallbackContext ctx)
@@ -79,7 +79,6 @@ public class BaseState : IState, IDisposable
         DebugX.Instance.Log("攻击事件触发");
         StateMachine.ChangeState<AttackState>();
     }
-
 
     #endregion
 }

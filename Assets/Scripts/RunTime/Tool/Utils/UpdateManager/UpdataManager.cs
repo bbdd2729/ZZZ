@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class UpdateManager : MonoBehaviour
 {
-
-
-    public List<Action>         UpdateActionList      = new();
     public List<Action>         FixedUpdateActionList = new();
-    public List<Action>         LateUpdateActionList  = new();
-
-    public List<IUpdateManager> UpdateList            = new();
     public List<IUpdateManager> FixedUpdateList       = new();
-    public List<IUpdateManager> LateUpdateList        = new();
 
-    private bool             isUpdating            = false;
+    private bool                 isUpdating           = false;
+    public  List<Action>         LateUpdateActionList = new();
+    public  List<IUpdateManager> LateUpdateList       = new();
+
+
+    public List<Action> UpdateActionList = new();
+
+    public List<IUpdateManager> UpdateList = new();
     public UpdateManager        Instance { get; private set; }
 
 

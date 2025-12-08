@@ -5,43 +5,14 @@ using UnityEngine;
 
 public class StateMachine : IStateMachine
 {
-    #region 字段定义
-    internal PlayerController         _playerController;    //角色控制器
-    internal CharacterController      _characterController; //角色控制器
-    internal Animator                 _animator;            //角色动画器
-    private  IState                   _currentState;        //状态接口
-    internal Dictionary<Type, IState> _states                  = new();     //状态字典
-    private  CompositeDisposable      _disposables = new();     //状态机使用的可取消订阅
-    internal int                      currentNormalAttackIndex = 1;    //当前普通攻击索引
-    private bool _isEnabled               = true;    //是否启用状态机
-    public  bool IsEnabled => _isEnabled;
-    #region 状态机锁
-
-    // 为内部状态类提供访问_stateLocked的公共方法
-    public bool GetStateLocked() => StateLocked;    
-    
-    
-    public void SetStateLocked(bool value) => StateLocked = value;
-    
-    public BaseState CurrentState
-    {
-        get => _currentState as BaseState;
-        private set => _currentState = value;
-    }
-    public bool StateLocked { get; set; } = false;
-
-    #endregion 
-    // 性能监控
-    private StateMachinePerformanceMonitor _performanceMonitor;
-    public StateMachinePerformanceMonitor PerformanceMonitor => _performanceMonitor;
-    #endregion
     public StateMachine(PlayerController playerController) // 状态机构造函数
     {
         _playerController = playerController;
         _characterController = playerController._characterController;
         _animator = playerController._animator;
-        _performanceMonitor = new StateMachinePerformanceMonitor();
+        PerformanceMonitor = new StateMachinePerformanceMonitor();
     }
+
     public void RegisterState<T>(T state) where T : IState
     {
         var type = typeof(T);
@@ -57,9 +28,10 @@ public class StateMachine : IStateMachine
 
         _states[type] = state;
     }
+
     public void ChangeState<T>() where T : IState
     {
-        if (StateLocked || !_isEnabled) return;
+        if (StateLocked || !IsEnabled) return;
 
         var type = typeof(T);
         if (_states.TryGetValue(type, out var newState))
@@ -73,16 +45,25 @@ public class StateMachine : IStateMachine
             Debug.LogError($"State {type} not registered!");
         }
     }
+
     public void Update()
     {
-        if (!_isEnabled) return;  // 禁用时停止全部逻辑
-        
+        if (!IsEnabled) return; // 禁用时停止全部逻辑
+
         // 使用性能监控记录状态更新
-        _performanceMonitor?.RecordStateUpdate(_currentState, () =>
-        {
-            _currentState?.Update();
-        });
+        PerformanceMonitor?.RecordStateUpdate(_currentState, () => { _currentState?.Update(); });
     }
+
+    public void Lock()
+    {
+        StateLocked = true;
+    }
+
+    public void Unlock()
+    {
+        StateLocked = false;
+    }
+
     /*public void Dispose()
     {
         _currentState?.OnExit();
@@ -100,11 +81,13 @@ public class StateMachine : IStateMachine
     {
         //Dispose();
     }
+
     public void Dispose() { }
+
     public void Enable()
     {
-        if (_isEnabled) return;
-        _isEnabled = true;
+        if (IsEnabled) return;
+        IsEnabled = true;
 
         // 不在这里控制输入,由外部或状态自己控制
         // _playerController.SetInputActive(true);
@@ -112,10 +95,11 @@ public class StateMachine : IStateMachine
         // 重新进入当前状态(可选)
         // _currentState?.OnEnter();
     }
+
     public void Disable()
     {
-        if (!_isEnabled) return;
-        _isEnabled = false;
+        if (!IsEnabled) return;
+        IsEnabled = false;
 
         // 不在这里控制输入,由外部或状态自己控制
         // _playerController.SetInputActive(false);
@@ -123,12 +107,45 @@ public class StateMachine : IStateMachine
         // 可选:让当前状态暂停(如需要)
         // _currentState?.OnExit();
     }
-    public void Lock()
+
+    #region 字段定义
+
+    internal PlayerController         _playerController;                //角色控制器
+    internal CharacterController      _characterController;             //角色控制器
+    internal Animator                 _animator;                        //角色动画器
+    private  IState                   _currentState;                    //状态接口
+    internal Dictionary<Type, IState> _states                  = new(); //状态字典
+    private  CompositeDisposable      _disposables             = new(); //状态机使用的可取消订阅
+    internal int                      currentNormalAttackIndex = 1;     //当前普通攻击索引
+
+    public bool IsEnabled { get; private set; } = true;
+
+    #region 状态机锁
+
+    // 为内部状态类提供访问_stateLocked的公共方法
+    public bool GetStateLocked()
     {
-        StateLocked = true;
+        return StateLocked;
     }
-    public void Unlock()
+
+    public void SetStateLocked(bool value)
     {
-        StateLocked = false;
+        StateLocked = value;
     }
+
+    public BaseState CurrentState
+    {
+        get => _currentState as BaseState;
+        private set => _currentState = value;
+    }
+
+    public bool StateLocked { get; set; }
+
+    #endregion
+
+    // 性能监控
+
+    public StateMachinePerformanceMonitor PerformanceMonitor { get; }
+
+    #endregion
 }

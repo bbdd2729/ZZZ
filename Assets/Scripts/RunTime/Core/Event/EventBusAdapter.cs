@@ -1,8 +1,8 @@
 using System;
 
 /// <summary>
-/// EventBus适配器 - 将现有的EventBus单例适配到IEventBus接口
-/// 用于依赖注入兼容性
+///     EventBus适配器 - 将现有的EventBus单例适配到IEventBus接口
+///     用于依赖注入兼容性
 /// </summary>
 public class EventBusAdapter : IEventBus
 {

@@ -3,7 +3,7 @@
     public override void OnEnter()
     {
         base.OnEnter();
-        StateMachine._animator.Play("Run");
+        StateMachine._animator.CrossFade("Run", StateMachine._playerController.AnimationTranslationTime);
         InputSystem.Instance.OnMoveCanceled += OnMoveCanceled;
         InputSystem.Instance.OnEvadeEvent += OnEvadeEvent;
         InputSystem.Instance.OnBigSkillEvent += OnBigSkill;

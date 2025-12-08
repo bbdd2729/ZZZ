@@ -4,14 +4,14 @@ using UnityEngine;
 public interface IPlayerObjectPool
 {
     GameObject GetPlayerFromPool(string playerId, Vector3 position, Quaternion rotation);
-    void ReturnPlayerToPool(string playerId, GameObject playerObject);
-    void ClearPool();
+    void       ReturnPlayerToPool(string playerId, GameObject playerObject);
+    void       ClearPool();
 }
 
 public class PlayerObjectPool : IPlayerObjectPool
 {
     private readonly Dictionary<string, Queue<GameObject>> _playerPools = new();
-    private readonly Transform _poolContainer;
+    private readonly Transform                             _poolContainer;
 
     public PlayerObjectPool()
     {
@@ -29,6 +29,7 @@ public class PlayerObjectPool : IPlayerObjectPool
             obj.SetActive(true);
             return obj;
         }
+
         return null;
     }
 
@@ -38,34 +39,30 @@ public class PlayerObjectPool : IPlayerObjectPool
 
         playerObject.SetActive(false);
         playerObject.transform.SetParent(_poolContainer);
-        
+
         if (!_playerPools.ContainsKey(playerId))
             _playerPools[playerId] = new Queue<GameObject>();
-        
+
         _playerPools[playerId].Enqueue(playerObject);
     }
 
     public void ClearPool()
     {
         foreach (var pool in _playerPools.Values)
-        {
             while (pool.Count > 0)
             {
                 var obj = pool.Dequeue();
                 if (obj != null)
                     Object.Destroy(obj);
             }
-        }
+
         _playerPools.Clear();
     }
 
     public Dictionary<string, int> GetPoolStats()
     {
         var stats = new Dictionary<string, int>();
-        foreach (var kvp in _playerPools)
-        {
-            stats[kvp.Key] = kvp.Value.Count;
-        }
+        foreach (var kvp in _playerPools) stats[kvp.Key] = kvp.Value.Count;
         return stats;
     }
 }

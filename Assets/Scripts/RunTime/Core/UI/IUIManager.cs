@@ -1,6 +1,3 @@
 ﻿namespace RunTime.Core.UI;
 
-public interface IUIManager
-{
-    
-}
+public interface IUIManager { }

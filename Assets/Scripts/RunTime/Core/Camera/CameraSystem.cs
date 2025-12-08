@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class CameraSystem : MonoBehaviour
 {
-    public  Vector3                  CamPosition;
-    public  Quaternion               CamRotation;
-    private ICinemachineCamera       _activeCamera;
-    private CinemachineBrain         _cinemachineBrain;
-    private CinemachineVirtualCamera _cinemachineVirtualCamera;
-    public  Transform                LookAtPoint;
-    public static CameraSystem Instance;
+    public static CameraSystem             Instance;
+    public        Vector3                  CamPosition;
+    public        Quaternion               CamRotation;
+    public        Transform                LookAtPoint;
+    private       ICinemachineCamera       _activeCamera;
+    private       CinemachineBrain         _cinemachineBrain;
+    private       CinemachineVirtualCamera _cinemachineVirtualCamera;
 
 
     private void Start()
@@ -30,7 +30,5 @@ public class CameraSystem : MonoBehaviour
     private void LateUpdate()
     {
         //LookAtPoint.position = PlayerManager.Instance.CurrentPlayer.LookAtPoint.position;
-
-
     }
 }

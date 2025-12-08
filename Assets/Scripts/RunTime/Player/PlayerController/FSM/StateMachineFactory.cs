@@ -3,24 +3,24 @@ using VContainer;
 public class StateMachineFactory : IStateMachineFactory
 {
     private readonly IObjectResolver _container;
-    
+
     [Inject]
     public StateMachineFactory(IObjectResolver container)
     {
         _container = container;
     }
-    
+
     public IStateMachine CreateStateMachine(PlayerController playerController)
     {
         // 创建状态机实例
         var stateMachine = new StateMachine(playerController);
-        
+
         // 注册所有状态
         RegisterPlayerStates(stateMachine, playerController);
-        
+
         return stateMachine;
     }
-    
+
     private void RegisterPlayerStates(IStateMachine stateMachine, PlayerController playerController)
     {
         // 创建状态实例
@@ -35,7 +35,7 @@ public class StateMachineFactory : IStateMachineFactory
         var bigSkillState = new BigSkillState();
         var switchInState = new SwitchInState();
         var switchOutState = new SwitchOutState();
-        
+
         // 注册状态
         stateMachine.RegisterState(idleState);
         stateMachine.RegisterState(walkState);
@@ -48,7 +48,7 @@ public class StateMachineFactory : IStateMachineFactory
         stateMachine.RegisterState(bigSkillState);
         stateMachine.RegisterState(switchInState);
         stateMachine.RegisterState(switchOutState);
-        
+
         // 设置初始状态
         stateMachine.ChangeState<IdleState>();
     }

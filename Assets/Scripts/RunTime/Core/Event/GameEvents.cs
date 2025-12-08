@@ -15,7 +15,7 @@ public static class GameEvents
     //public static readonly Subject<GamePausedEvent> OnGamePaused = new();
 
     // 输入事件
-    public static readonly Subject<InputEvent>      OnInput      = new();
+    public static readonly Subject<InputEvent> OnInput = new();
     //public static readonly Subject<MouseClickEvent> OnMouseClick = new();
 
     // UI事件

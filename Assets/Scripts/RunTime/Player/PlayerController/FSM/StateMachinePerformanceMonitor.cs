@@ -5,11 +5,11 @@ using Debug = UnityEngine.Debug;
 
 public class StateMachinePerformanceMonitor
 {
-    private readonly Stopwatch _stateUpdateTimer = new();
-    private readonly Dictionary<Type, long> _stateUpdateTimes = new();
-    private readonly Dictionary<Type, int> _stateUpdateCounts = new();
-    private long _totalUpdateTime;
-    private int _totalUpdateCount;
+    private readonly Dictionary<Type, int>  _stateUpdateCounts = new();
+    private readonly Stopwatch              _stateUpdateTimer  = new();
+    private readonly Dictionary<Type, long> _stateUpdateTimes  = new();
+    private          int                    _totalUpdateCount;
+    private          long                   _totalUpdateTime;
 
     public void RecordStateUpdate(IState state, Action updateAction)
     {
@@ -42,10 +42,7 @@ public class StateMachinePerformanceMonitor
         _totalUpdateCount++;
 
         // 性能警告 - 超过16ms（1帧时间）
-        if (elapsedMs > 16)
-        {
-            Debug.LogWarning($"State {stateType.Name} took {elapsedMs}ms to update");
-        }
+        if (elapsedMs > 16) Debug.LogWarning($"State {stateType.Name} took {elapsedMs}ms to update");
     }
 
     public Dictionary<Type, long> GetAverageUpdateTimes()
@@ -58,6 +55,7 @@ public class StateMachinePerformanceMonitor
             var count = _stateUpdateCounts[stateType];
             averages[stateType] = count > 0 ? totalTime / count : 0;
         }
+
         return averages;
     }
 
@@ -77,14 +75,12 @@ public class StateMachinePerformanceMonitor
     public void LogPerformanceReport()
     {
         Debug.Log("=== State Machine Performance Report ===");
-        
+
         var averages = GetAverageUpdateTimes();
         foreach (var kvp in averages)
-        {
             Debug.Log($"State: {kvp.Key.Name}, Avg Time: {kvp.Value}ms, " +
                       $"Total Calls: {_stateUpdateCounts[kvp.Key]}");
-        }
-        
+
         Debug.Log($"Total Average Update Time: {GetTotalAverageUpdateTime()}ms");
         Debug.Log("=====================================");
     }

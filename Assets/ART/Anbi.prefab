@@ -758,10 +758,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 6968421401438025606}
   _characterController: {fileID: 2787360477424455453}
-  _cameraSystem: {fileID: 0}
-  RotationSpeed: 10
-  _camera: {fileID: 0}
-  AttackLength: 4
+  playerConfig: {fileID: 11400000, guid: 72cfb9d216961b442b1869ebf4e55322, type: 2}
+  playerControllerConfig: {fileID: 11400000, guid: 79eaa14fdea61ab41b59926dce7e07d7, type: 2}
   PlayerData: {fileID: 0}
   LookAtPoint: {fileID: 2702181178612416609}
 --- !u!95 &6968421401438025606 stripped

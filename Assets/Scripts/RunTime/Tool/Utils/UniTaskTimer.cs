@@ -47,7 +47,10 @@ public sealed class UniTaskTimer : IDisposable
     /// <summary>
     ///     当前是否正在运行
     /// </summary>
-    public bool IsRunning => _core != null;
+    public bool IsRunning
+    {
+        get => _core != null;
+    }
 
     /// <summary>
     ///     已经完成的周期数（单次模式里只有 0/1）
@@ -81,9 +84,9 @@ public sealed class UniTaskTimer : IDisposable
     ///     创建并立即启动一个计时器
     /// </summary>
     public static UniTaskTimer StartTimer(Mode mode,
-                                     double interval,
-                                     TimeSource source = TimeSource.Scaled,
-                                     Action callback = null)
+                                          double interval,
+                                          TimeSource source = TimeSource.Scaled,
+                                          Action callback = null)
     {
         var t = new UniTaskTimer(mode, interval, source, callback);
         t.StartCore();

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class LookAtPoint  : MonoBehaviour
+public class LookAtPoint : MonoBehaviour
 {
     public void LateUpdate()
     {

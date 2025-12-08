@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public  class EventBus : SingletonBase<EventBus>
+public class EventBus : SingletonBase<EventBus>
 {
     private readonly Dictionary<Type, object> _events = new();
 

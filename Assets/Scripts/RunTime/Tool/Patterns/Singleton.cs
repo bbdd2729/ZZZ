@@ -20,5 +20,8 @@ public abstract class SingletonBase<T> where T : class, new()
     }
 
     // 获取单例实例的公共属性
-    public static T Instance => _instance.Value;
+    public static T Instance
+    {
+        get => _instance.Value;
+    }
 }
