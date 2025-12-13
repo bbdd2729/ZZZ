@@ -1,7 +1,9 @@
 using UnityEngine;
 
 public class WalkState : BaseState
-{
+{   
+    
+    private UniTaskTimer _timer;
     public override void OnEnter()
     {
         StateMachine._animator.CrossFade("Walk", StateMachine._playerController.AnimationTranslationTime);
@@ -9,10 +11,10 @@ public class WalkState : BaseState
         InputSystem.Instance.OnEvadeEvent += OnEvadeEvent;
         InputSystem.Instance.OnBigSkillEvent += OnBigSkill;
         InputSystem.Instance.OnAttackEvent += OnAttack;
-        UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 6.0f,
+        _timer = UniTaskTimer.StartTimer(UniTaskTimer.Mode.Once, 6.0f,
                                 UniTaskTimer.TimeSource.Scaled,
                                 () => { StateMachine.ChangeState<RunState>(); }
-                               );
+                                );
     }
 
     public override void Update()
@@ -25,6 +27,7 @@ public class WalkState : BaseState
     public override void OnExit()
     {
         base.OnExit();
+        _timer.Stop();
         //InputSystem.Instance.OnMoveCanceled -= OnMoveCanceled;
         InputSystem.Instance.OnEvadeEvent -= OnEvadeEvent;
         InputSystem.Instance.OnBigSkillEvent -= OnBigSkill;

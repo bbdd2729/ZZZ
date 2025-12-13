@@ -402,7 +402,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0.73, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 0.2, y: 0.2}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -424,7 +424,7 @@ MonoBehaviour:
   TrackerSettings:
     BindingMode: 4
     PositionDamping: {x: 1, y: 1, z: 1}
-    AngularDampingMode: 0
+    AngularDampingMode: 1
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 1
@@ -495,7 +495,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 50.899918
+    FieldOfView: 47.1
     OrthographicSize: 5
     NearClipPlane: 0.19479814
     FarClipPlane: 1000
@@ -629,7 +629,7 @@ Camera:
     height: 1
   near clip plane: 0.19479814
   far clip plane: 1000
-  field of view: 50.899918
+  field of view: 47.1
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -655,7 +655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.015098161, y: -0.00000000703458, z: 1.0622133e-10, w: 0.99988604}
+  m_LocalRotation: {x: 0.01509819, y: -7.064844e-10, z: 1.0667853e-11, w: 0.99988604}
   m_LocalPosition: {x: 30.73, y: 2.1779313, z: 43.7267}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
